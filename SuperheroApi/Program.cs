@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using SuperheroApi.Core;
+using SuperheroApi.Core.Repositories;
 using SuperheroApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,9 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//builder.Services.AddScoped<ISuperheroRepository, SuperheroRepository>();
+//builder.Services.AddScoped<IFavoriteSuperheroRepository, FavoriteSuperheroRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

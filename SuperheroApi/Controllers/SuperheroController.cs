@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SuperheroApi.Core;
 using SuperheroApi.Data;
 using SuperheroApi.Models;
+
 
 
 namespace SuperheroApi.Controllers
@@ -11,11 +13,13 @@ namespace SuperheroApi.Controllers
     [ApiController]
     public class SuperheroController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfwork;
         private readonly ApiDbContext _context;
 
         // Constructor that accepts the database context
-        public SuperheroController(ApiDbContext context)
+        public SuperheroController(IUnitOfWork unitOfWork, ApiDbContext context)
         {
+            _unitOfwork = unitOfWork;
             _context = context;
         }
 
@@ -23,14 +27,7 @@ namespace SuperheroApi.Controllers
         [HttpGet("search/{name}")]
         public async Task<IActionResult> SearchSuperhero(string name)
         {
-            // Fetch all superheroes from the database
-            var superheroes = await _context.Superheroes.ToListAsync();
-
-            // Perform case-insensitive search in memory
-            var result = superheroes
-                .Where(s => s.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
+            var result = await _unitOfwork.Superheroes.GetByName(name);
             return Ok(result);
         }
 
@@ -38,10 +35,7 @@ namespace SuperheroApi.Controllers
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavorite([FromBody] string superheroName)
         {
-            // Fetch all superheroes from the database
             var superheroes = await _context.Superheroes.ToListAsync();
-
-            // Perform case-insensitive search in memory
             var superhero = superheroes
                 .FirstOrDefault(s => s.Name.Equals(superheroName, StringComparison.OrdinalIgnoreCase));
 
@@ -68,6 +62,28 @@ namespace SuperheroApi.Controllers
                 .Include(f => f.Superhero)
                 .ToListAsync();
             return Ok(favorites);
+        }
+
+        // Endpoint to Delete superheroe by name of favoritesuperheroes
+        [HttpDelete("favorites/{name}")]
+        public async Task<IActionResult> DeleteFavorite(string name)
+        {
+            var superheroes = await _context.Superheroes.ToListAsync();
+            var superhero = superheroes
+                .FirstOrDefault(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            if (superhero != null)
+            {
+                var favorite = await _context.FavoriteSuperheroes
+                    .FirstOrDefaultAsync(f => f.SuperheroId == superhero.Id);
+                if (favorite != null)
+                {
+                    _context.FavoriteSuperheroes.Remove(favorite);
+                    await _context.SaveChangesAsync();
+                    return Ok("Favorite superhero removed.");
+                }
+            }
+            return NotFound("Favorite superhero not found.");
         }
     }
 }
