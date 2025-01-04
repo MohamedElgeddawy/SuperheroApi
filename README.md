@@ -1,6 +1,6 @@
 ## Superhero API
 
-This API allows you to manage superheroes and their favorite status. It provides endpoints to search for superheroes, add them to favorites, and retrieve the list of favorite superheroes.
+This API allows you to manage superheroes and their favorite status. It provides endpoints to search for superheroes, add them to favorites, retrieve the list of favorite superheroes, and delete a favorite superhero by name.
 
 ### Endpoints
 
@@ -37,6 +37,19 @@ Retrieve the list of favorite superheroes.
 
 - **Response:**
   - `200 OK`: Returns a list of favorite superheroes.
+
+#### Delete a Favorite Superhero by Name
+
+**DELETE** `/api/superhero/favorites/{name}`
+
+Delete a favorite superhero by name.
+
+- **Parameters:**
+  - `name` (string): The name of the superhero to delete from favorites.
+
+- **Response:**
+  - `200 OK`: If the favorite superhero is successfully removed.
+  - `404 Not Found`: If the favorite superhero is not found.
 
 ### Models
 
@@ -89,5 +102,3 @@ Represents the database context for the application.
 2. Restore the dependencies using `dotnet restore`.
 3. Build the project using `dotnet build`.
 4. Run the application using `dotnet run`.
-
-
