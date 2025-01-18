@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuperheroApi.Data;
 
@@ -10,9 +11,11 @@ using SuperheroApi.Data;
 namespace SuperheroApi.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250114151333_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,50 +77,6 @@ namespace SuperheroApi.Migrations
                             Race = "Human",
                             SuperheroId = 1,
                             Weight = "[\"980 lb\",\"441 kg\"]"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EyeColor = "Hazel",
-                            Gender = "Male",
-                            HairColor = "Brown",
-                            Height = "[\"5\\u002710\",\"178 cm\"]",
-                            Race = "Human",
-                            SuperheroId = 2,
-                            Weight = "[\"165 lb\",\"74 kg\"]"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EyeColor = "Blue",
-                            Gender = "Male",
-                            HairColor = "Black",
-                            Height = "[\"6\\u00276\",\"198 cm\"]",
-                            Race = "Human",
-                            SuperheroId = 3,
-                            Weight = "[\"425 lb\",\"191 kg\"]"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            EyeColor = "Blue",
-                            Gender = "Female",
-                            HairColor = "Black",
-                            Height = "[\"6\\u00270\",\"183 cm\"]",
-                            Race = "Amazon",
-                            SuperheroId = 4,
-                            Weight = "[\"165 lb\",\"75 kg\"]"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EyeColor = "Blue",
-                            Gender = "Male",
-                            HairColor = "Black",
-                            Height = "[\"6\\u00272\",\"188 cm\"]",
-                            Race = "Human",
-                            SuperheroId = 5,
-                            Weight = "[\"210 lb\",\"95 kg\"]"
                         });
                 });
 
@@ -179,54 +138,6 @@ namespace SuperheroApi.Migrations
                             PlaceOfBirth = "Scarsdale, Arizona",
                             Publisher = "Marvel Comics",
                             SuperheroId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Aliases = "[\"Spiderman\",\"Bag-Man\"]",
-                            Alignment = "good",
-                            AlterEgos = "No alter egos found.",
-                            FirstAppearance = "Amazing Fantasy #15",
-                            FullName = "Peter Parker",
-                            PlaceOfBirth = "New York, New York",
-                            Publisher = "Marvel Comics",
-                            SuperheroId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Aliases = "[\"Iron Knight\",\"The Golden Avenger\"]",
-                            Alignment = "good",
-                            AlterEgos = "No alter egos found.",
-                            FirstAppearance = "Tales of Suspense #39",
-                            FullName = "Tony Stark",
-                            PlaceOfBirth = "Long Island, New York",
-                            Publisher = "Marvel Comics",
-                            SuperheroId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Aliases = "[\"Princess Diana\"]",
-                            Alignment = "good",
-                            AlterEgos = "No alter egos found.",
-                            FirstAppearance = "All-Star Comics #8",
-                            FullName = "Diana Prince",
-                            PlaceOfBirth = "Themyscira",
-                            Publisher = "DC Comics",
-                            SuperheroId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Aliases = "[\"The Dark Knight\",\"The Caped Crusader\"]",
-                            Alignment = "good",
-                            AlterEgos = "No alter egos found.",
-                            FirstAppearance = "Detective Comics #27",
-                            FullName = "Bruce Wayne",
-                            PlaceOfBirth = "Gotham City",
-                            Publisher = "DC Comics",
-                            SuperheroId = 5
                         });
                 });
 
@@ -263,34 +174,6 @@ namespace SuperheroApi.Migrations
                             GroupAffiliation = "Hulk Family; Excelsior (sponsor), Avengers (honorary member); formerly partner of the Hulk, Captain America and Captain Marvel; Teen Brigade; ally of Rom",
                             Relatives = "Marlo Chandler-Jones (wife); Polly (aunt); Mrs. Chandler (mother-in-law); Keith Chandler, Ray Chandler, three unidentified others (brothers-in-law); unidentified father (deceased); Jackie Shorr (alleged mother; unconfirmed)",
                             SuperheroId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            GroupAffiliation = "Avengers, formerly Secret Defenders, \"New Fantastic Four\", the Outlaws",
-                            Relatives = "Richard Parker (father), Mary Parker (mother), Benjamin Parker (uncle, deceased), May Parker (aunt), Mary Jane Watson-Parker (wife)",
-                            SuperheroId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            GroupAffiliation = "Avengers, S.H.I.E.L.D., Stark Industries",
-                            Relatives = "Howard Stark (father), Maria Stark (mother), Morgan Stark (cousin)",
-                            SuperheroId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            GroupAffiliation = "Justice League of America, Justice Society of America",
-                            Relatives = "Hippolyta (mother), Steve Trevor (love interest)",
-                            SuperheroId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            GroupAffiliation = "Justice League of America, Batman Family",
-                            Relatives = "Thomas Wayne (father), Martha Wayne (mother), Dick Grayson (adopted son), Jason Todd (adopted son), Tim Drake (adopted son), Damian Wayne (son)",
-                            SuperheroId = 5
                         });
                 });
 
@@ -322,30 +205,6 @@ namespace SuperheroApi.Migrations
                             Id = 1,
                             SuperheroId = 1,
                             Url = "https://www.superherodb.com/pictures2/portraits/10/100/10060.jpg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            SuperheroId = 2,
-                            Url = "https://www.superherodb.com/pictures2/portraits/10/100/133.jpg"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            SuperheroId = 3,
-                            Url = "https://www.superherodb.com/pictures2/portraits/10/100/85.jpg"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            SuperheroId = 4,
-                            Url = "https://www.superherodb.com/pictures2/portraits/10/100/807.jpg"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            SuperheroId = 5,
-                            Url = "https://www.superherodb.com/pictures2/portraits/10/100/639.jpg"
                         });
                 });
 
@@ -396,50 +255,6 @@ namespace SuperheroApi.Migrations
                             Speed = 17,
                             Strength = 100,
                             SuperheroId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Combat = 85,
-                            Durability = 75,
-                            Intelligence = 90,
-                            Power = 74,
-                            Speed = 67,
-                            Strength = 55,
-                            SuperheroId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Combat = 64,
-                            Durability = 85,
-                            Intelligence = 100,
-                            Power = 100,
-                            Speed = 58,
-                            Strength = 85,
-                            SuperheroId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Combat = 100,
-                            Durability = 100,
-                            Intelligence = 88,
-                            Power = 100,
-                            Speed = 79,
-                            Strength = 100,
-                            SuperheroId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Combat = 100,
-                            Durability = 50,
-                            Intelligence = 100,
-                            Power = 47,
-                            Speed = 27,
-                            Strength = 26,
-                            SuperheroId = 5
                         });
                 });
 
@@ -464,26 +279,6 @@ namespace SuperheroApi.Migrations
                         {
                             Id = 1,
                             Name = "A-Bomb"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Spider-Man"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Iron Man"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Wonder Woman"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Batman"
                         });
                 });
 
@@ -538,34 +333,6 @@ namespace SuperheroApi.Migrations
                             Base = "-",
                             Occupation = "Musician, adventurer, author; formerly talk show host",
                             SuperheroId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Base = "New York, New York",
-                            Occupation = "Freelance photographer, superhero",
-                            SuperheroId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Base = "Seattle, Washington",
-                            Occupation = "Inventor, Industrialist; former United States Secretary of Defense",
-                            SuperheroId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Base = "Themyscira",
-                            Occupation = "Adventurer, Emissary to the world of Man, Protector of Paradise Island",
-                            SuperheroId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Base = "Gotham City",
-                            Occupation = "Businessman, CEO of Wayne Enterprises",
-                            SuperheroId = 5
                         });
                 });
 

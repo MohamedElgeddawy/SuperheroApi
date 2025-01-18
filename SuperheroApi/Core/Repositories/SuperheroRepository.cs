@@ -9,11 +9,20 @@ namespace SuperheroApi.Core.Repositories
         public SuperheroRepository(ApiDbContext context, ILogger logger) : base(context, logger)
         {
         }
-        public async Task<Superhero> GetByName(string name)
-        {
-            return await _context.Superheroes.FirstOrDefaultAsync(s => s.Name == name);
-        }
 
+        public override async Task<Superhero> GetByName(string name)
+        {
+            var superhero = await _context.Superheroes
+                .Include(s => s.Powerstats)
+                .Include(s => s.Biography)
+                .Include(s => s.Appearance)
+                .Include(s => s.Work)
+                .Include(s => s.Connections)
+                .Include(s => s.Image)
+                .FirstOrDefaultAsync(s => s.Name == name);
+
+            return superhero!;
+        }
     }
     
 }
