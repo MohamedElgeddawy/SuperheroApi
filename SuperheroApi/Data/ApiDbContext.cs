@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SuperheroApi.Models;
 
 namespace SuperheroApi.Data
 {
     // Represents the database context for the application
-    public class ApiDbContext : DbContext
+    public class ApiDbContext : IdentityDbContext<IdentityUser>
     {
         // DbSet properties represent collections of the specified entity types in the database
         public DbSet<Superhero> Superheroes { get; set; }

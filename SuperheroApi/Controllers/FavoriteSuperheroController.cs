@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperheroApi.Core;
@@ -9,6 +10,7 @@ using SuperheroApi.Models;
 
 namespace SuperheroApi.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class FavoriteSuperheroController : ControllerBase
@@ -23,7 +25,7 @@ namespace SuperheroApi.Controllers
             _context = context;
         }
 
-
+        [Authorize(Roles = "Admin")]
         // Endpoint to search for superheroes by name
         [HttpGet("search/{name}")]
         public async Task<IActionResult> SearchSuperhero(string name)
@@ -43,7 +45,7 @@ namespace SuperheroApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while searching for the superhero.");
             }
         }
-
+        [Authorize(Roles = "User")]
         // Endpoint to add a favorite superhero
         [HttpPost("AddFavorites")]
         public async Task<IActionResult> AddFavorite([FromBody] string superheroName)
