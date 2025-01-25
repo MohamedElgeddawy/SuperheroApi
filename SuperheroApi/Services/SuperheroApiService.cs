@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using SuperheroApi.Core;
 using SuperheroApi.Data;
@@ -15,25 +16,37 @@ public class SuperheroApiService : ISuperheroApiService
         private readonly string _apiKey;
         private readonly string _baseUrl;
         private readonly ApiDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public SuperheroApiService(HttpClient httpClient, IConfiguration configuration, ApiDbContext context)
+        public SuperheroApiService(HttpClient httpClient, IConfiguration configuration, ApiDbContext context, IMemoryCache cache)
         {
             _httpClient = httpClient;
             _apiKey = configuration["SuperheroApi:ApiKey"];
             _baseUrl = configuration["SuperheroApi:BaseUrl"];
             _context = context;
+            _cache = cache;
         }
 
         public async Task<Superhero> GetSuperheroByIdAsync(int id)
         {
-            var apiKey = "1ad4ae5a4197e592e3f5ffd66f99e113";
-            var baseUrl = "https://superheroapi.com/api.php";
-            var url = $"{_baseUrl}/{_apiKey}/{id}";
-            var response = await _httpClient.GetAsync(url);
+            var cacheKey = $"Superhero_{id}";
+            if (!_cache.TryGetValue(cacheKey, out Superhero superhero))
+            {
+                var url = $"{_baseUrl}/{_apiKey}/{id}";
+                var response = await _httpClient.GetAsync(url);
 
-            return response.IsSuccessStatusCode
-                ? await response.Content.ReadFromJsonAsync<Superhero>()
-                : null;
+                if (response.IsSuccessStatusCode)
+                {
+                    superhero = await response.Content.ReadFromJsonAsync<Superhero>();
+
+                    var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(5));
+
+                    _cache.Set(cacheKey, superhero, cacheEntryOptions);
+                }
+            }
+
+            return superhero;
         }
 
         public async Task AddFavoriteSuperheroAsync(int superheroId)
