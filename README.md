@@ -23,7 +23,7 @@ The `SuperheroApi` is a RESTful API built using ASP.NET Core that provides infor
 ## Getting Started
 
 ### Prerequisites
-- .NET Core SDK 5.0 or later.
+- .NET Core SDK 8.0.
 - An IDE like Visual Studio or VS Code.
 
 ### Installation
