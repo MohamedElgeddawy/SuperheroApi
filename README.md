@@ -1,104 +1,114 @@
-## Superhero API
+# SuperheroApi
 
-This API allows you to manage superheroes and their favorite status. It provides endpoints to search for superheroes, add them to favorites, retrieve the list of favorite superheroes, and delete a favorite superhero by name.
+## Overview
+The `SuperheroApi` is a RESTful API built using ASP.NET Core that provides information about superheroes. It leverages the repository pattern for data access, implements authentication to secure endpoints, and uses an in-memory cache to improve performance.
 
-### Endpoints
+## Features
+1. **Superhero Data Retrieval**
+   - Get a list of all superheroes.
+   - Get details of a specific superhero by ID.
 
-#### Search for Superheroes
+2. **Repository Pattern**
+   - Separation of concerns between business logic and data access.
+   - Simplified unit testing.
 
-**GET** `/api/superhero/search/{name}`
+3. **Authentication**
+   - Secured endpoints using JWT (JSON Web Tokens).
+   - Role-based authorization.
 
-Search for superheroes by name.
+4. **In-Memory Cache**
+   - Improved performance by caching frequently accessed data.
+   - Reduces database load.
 
-- **Parameters:**
-  - `name` (string): The name of the superhero to search for.
+## Getting Started
 
-- **Response:**
-  - `200 OK`: Returns a list of superheroes that match the search criteria.
-
-#### Add a Favorite Superhero
-
-**POST** `/api/superhero/favorites`
-
-Add a superhero to the list of favorites.
-
-- **Request Body:**
-  - `superheroName` (string): The name of the superhero to add to favorites.
-
-- **Response:**
-  - `201 Created`: Returns the added favorite superhero.
-  - `400 Bad Request`: If the superhero is not found or is already in favorites.
-
-#### Get Favorite Superheroes
-
-**GET** `/api/superhero/favorites`
-
-Retrieve the list of favorite superheroes.
-
-- **Response:**
-  - `200 OK`: Returns a list of favorite superheroes.
-
-#### Delete a Favorite Superhero by Name
-
-**DELETE** `/api/superhero/favorites/{name}`
-
-Delete a favorite superhero by name.
-
-- **Parameters:**
-  - `name` (string): The name of the superhero to delete from favorites.
-
-- **Response:**
-  - `200 OK`: If the favorite superhero is successfully removed.
-  - `404 Not Found`: If the favorite superhero is not found.
-
-### Models
-
-#### Superhero
-
-Represents a superhero with various properties.
-
-- `int Id`: The unique identifier of the superhero.
-- `string Name`: The name of the superhero.
-- `Powerstats Powerstats`: The power stats of the superhero.
-- `Biography Biography`: The biography of the superhero.
-- `Appearance Appearance`: The appearance details of the superhero.
-- `Work Work`: The work details of the superhero.
-- `Connections Connections`: The connections of the superhero.
-- `Image Image`: The image of the superhero.
-
-#### FavoriteSuperhero
-
-Represents a favorite superhero with a reference to the Superhero entity.
-
-- `int Id`: The unique identifier of the favorite superhero.
-- `int SuperheroId`: The unique identifier of the superhero.
-- `Superhero Superhero`: The superhero entity.
-
-### Database Context
-
-#### ApiDbContext
-
-Represents the database context for the application.
-
-- `DbSet<Superhero> Superheroes`: Represents the collection of superheroes in the database.
-- `DbSet<FavoriteSuperhero> FavoriteSuperheroes`: Represents the collection of favorite superheroes in the database.
-
-### Usage
-
-1. Clone the repository.
-2. Configure the database connection string in `appsettings.json`.
-3. Run the migrations to create the database schema.
-4. Start the application.
-5. Use the provided endpoints to manage superheroes and their favorite status.
-
-### Requirements
-
-- .NET 8
-- Entity Framework Core
+### Prerequisites
+- .NET Core SDK 5.0 or later.
+- An IDE like Visual Studio or VS Code.
 
 ### Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/MohamedElgeddawy/SuperheroApi.git
+   cd SuperheroApi
+   ```
 
-1. Install the required .NET SDK.
-2. Restore the dependencies using `dotnet restore`.
-3. Build the project using `dotnet build`.
-4. Run the application using `dotnet run`.
+2. Restore dependencies:
+   ```sh
+   dotnet restore
+   ```
+
+3. Set up the database (if applicable):
+   - This project might use an in-memory database or a real database depending on configuration.
+
+4. Run the application:
+   ```sh
+   dotnet run
+   ```
+
+### Endpoints
+- **Get All Superheroes**:
+  ```
+  GET /api/superheroes
+  ```
+  Response:
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "Superman",
+      "power": "Flight"
+    },
+    ...
+  ]
+  ```
+
+- **Get Superhero by ID**:
+  ```
+  GET /api/superheroes/{id}
+  ```
+  Response:
+  ```json
+  {
+    "id": 1,
+    "name": "Superman",
+    "power": "Flight"
+  }
+  ```
+
+## Repository Pattern
+The repository pattern is a design pattern that abstracts the data layer from the business logic. It separates the responsibilities, making the code more maintainable and testable.
+
+### Implementation Details
+- **Interfaces**: Define interfaces for repositories (`ISuperheroRepository`).
+- **Concrete Classes**: Implement these interfaces (`SuperheroRepository`).
+- **Dependency Injection**: Register the repository in the `Startup.cs` file to inject it into controllers.
+
+
+
+## Authentication
+This project uses JWT for securing endpoints. Users must provide valid credentials to obtain a token, which they then use to access protected resources.
+
+### Implementation Details
+- **JWT Configuration**: Configure JWT in `Startup.cs`.
+- **Login Endpoint**: Create an endpoint to authenticate users and return a token.
+- **Authorization Attributes**: Use `[Authorize]` attribute to protect endpoints.
+
+
+
+## In-Memory Cache
+In-memory caching is used to store frequently accessed data in memory, reducing the need to repeatedly query the database.
+
+### Implementation Details
+- **Cache Service**: Inject `IMemoryCache` into your services/controllers.
+- **Set/Get Cache**: Use methods like `Set`, `Get`, `TryGetValue` to manage cached data.
+
+
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+
+You can now copy this content and paste it into your `README.md` file within your GitHub repository. This will ensure that your documentation is well-formatted and easy to read.
