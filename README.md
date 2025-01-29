@@ -109,6 +109,4 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
 
-You can now copy this content and paste it into your `README.md` file within your GitHub repository. This will ensure that your documentation is well-formatted and easy to read.
