@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using SuperheroApi.Core;
-using SuperheroApi.Core.Repositories;
+using SuperheroApi.Data.Repositories;
+using SuperheroApi.Data;
+using SuperheroApi.Data.Data; // Add this using directive
+
 
 namespace SuperheroApi.Data
 {
@@ -15,12 +18,12 @@ namespace SuperheroApi.Data
         public UnitOfWork(ApiDbContext context, ILoggerFactory loggerFactory)
         {
             _context = context;
-            var _logger = loggerFactory.CreateLogger("UnitOfWork");
+            var _superheroLogger = loggerFactory.CreateLogger<SuperheroRepository>();
+            var _favoriteSuperheroLogger = loggerFactory.CreateLogger<FavoriteSuperheroRepository>();
 
-            Superheroes = new SuperheroRepository(context, _logger);
-            FavoriteSuperheroes = new FavoriteSuperheroRepository(context, _logger);
+            Superheroes = new SuperheroRepository(context, _superheroLogger);
+            FavoriteSuperheroes = new FavoriteSuperheroRepository(context, _favoriteSuperheroLogger);
         }
-
 
         public async Task CompleteAsync()
         {

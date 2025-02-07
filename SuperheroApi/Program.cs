@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using SuperheroApi.Core;
-using SuperheroApi.Core.Repositories;
 using SuperheroApi.Data;
 using SuperheroApi.Services;
 using System.Text.Json.Serialization;
+using SuperheroApi.Core;
+using SuperheroApi.Data.Data;
+using SuperheroApi.Service.Services; 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register HttpClient
-builder.Services.AddHttpClient<ISuperheroApiService, SuperheroApiService>();
+builder.Services.AddHttpClient<SuperheroApiService>();
 
 // Add services to the container.
 
@@ -29,9 +30,8 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 });
 
 // Register services
-builder.Services.AddScoped<ISuperheroApiService, SuperheroApiService>();
+builder.Services.AddScoped<SuperheroApiService>(); // Updated line
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
 var app = builder.Build();
 

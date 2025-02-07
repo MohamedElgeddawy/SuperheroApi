@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using SuperheroApi.Core;
 using SuperheroApi.Data;
+using SuperheroApi.Data.Data;
 
-namespace SuperheroApi.Core.Repositories
+namespace SuperheroApi.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -16,7 +19,7 @@ namespace SuperheroApi.Core.Repositories
             _logger = logger;
         }
 
-        public virtual async Task<T>GetByName(string name)
+        public virtual async Task<T> GetByName(string name)
         {
             // search by name
             return await _dbSet.FirstOrDefaultAsync();
@@ -36,6 +39,6 @@ namespace SuperheroApi.Core.Repositories
             return true;
         }
     }
-    
-    
+
+
 }

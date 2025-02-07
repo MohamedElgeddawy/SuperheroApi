@@ -1,4 +1,6 @@
-﻿namespace SuperheroApi.Models
+﻿using SuperheroApi.Core.Models;
+
+namespace SuperheroApi.Models
 {
     // Represents a favorite superhero with a reference to the Superhero entity
     public class FavoriteSuperhero

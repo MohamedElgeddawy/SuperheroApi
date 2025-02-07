@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using SuperheroApi.Core;
 using SuperheroApi.Data;
+using SuperheroApi.Data.Data;
 using SuperheroApi.Models;
 
-namespace SuperheroApi.Core.Repositories
+namespace SuperheroApi.Data.Repositories
 {
     public class FavoriteSuperheroRepository : GenericRepository<FavoriteSuperhero>, IFavoriteSuperheroRepository
     {
@@ -50,5 +53,5 @@ namespace SuperheroApi.Core.Repositories
                 .ToListAsync();
         }
     }
-   
+
 }

@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperheroApi", "SuperheroApi\SuperheroApi.csproj", "{500A1C95-9C25-4C09-9027-57D3BE8E6005}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperheroApi.API", "SuperheroApi\SuperheroApi.API.csproj", "{500A1C95-9C25-4C09-9027-57D3BE8E6005}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperheroApi.Core", "SuperheroApi.Core\SuperheroApi.Core.csproj", "{A6D10557-2A99-4883-A126-3A8F2ADE56B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperheroApi.Data", "SuperheroApi.Data\SuperheroApi.Data.csproj", "{DF2E3AC6-F59E-4639-B7AC-67DE76F60F93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperheroApi.Service", "SuperheroApi.Service\SuperheroApi.Service.csproj", "{6636B626-66FE-40E3-970F-284D74856E83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{500A1C95-9C25-4C09-9027-57D3BE8E6005}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{500A1C95-9C25-4C09-9027-57D3BE8E6005}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{500A1C95-9C25-4C09-9027-57D3BE8E6005}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6D10557-2A99-4883-A126-3A8F2ADE56B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D10557-2A99-4883-A126-3A8F2ADE56B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D10557-2A99-4883-A126-3A8F2ADE56B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D10557-2A99-4883-A126-3A8F2ADE56B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2E3AC6-F59E-4639-B7AC-67DE76F60F93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2E3AC6-F59E-4639-B7AC-67DE76F60F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2E3AC6-F59E-4639-B7AC-67DE76F60F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2E3AC6-F59E-4639-B7AC-67DE76F60F93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6636B626-66FE-40E3-970F-284D74856E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6636B626-66FE-40E3-970F-284D74856E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6636B626-66FE-40E3-970F-284D74856E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6636B626-66FE-40E3-970F-284D74856E83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

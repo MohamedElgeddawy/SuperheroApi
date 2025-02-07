@@ -1,4 +1,6 @@
-﻿namespace SuperheroApi.Services
+﻿using SuperheroApi.Core.Models;
+
+namespace SuperheroApi.Services
 {
     public interface ISuperheroApiService
     {

@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SuperheroApi.Data;
-using SuperheroApi.Models;
+using Microsoft.Extensions.Logging;
+using SuperheroApi.Core;
+using SuperheroApi.Core.Models;
+using SuperheroApi.Data.Data;
 
-namespace SuperheroApi.Core.Repositories
+
+namespace SuperheroApi.Data.Repositories
 {
     public class SuperheroRepository : GenericRepository<Superhero>, ISuperheroRepository
     {
-        public SuperheroRepository(ApiDbContext context, ILogger logger) : base(context, logger)
+        public SuperheroRepository(ApiDbContext context, ILogger<SuperheroRepository> logger) : base(context, logger)
         {
         }
 
@@ -24,5 +27,5 @@ namespace SuperheroApi.Core.Repositories
             return superhero!;
         }
     }
-    
+
 }
