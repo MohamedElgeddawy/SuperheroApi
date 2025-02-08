@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SuperheroApi.Core;
-using SuperheroApi.Data;
-using SuperheroApi.Data.Data;
-using SuperheroApi.Models;
-
-
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using SuperheroApi.Services;
+using SuperheroApi.Services.Service;
 
 namespace SuperheroApi.Controllers
 {
@@ -14,30 +9,31 @@ namespace SuperheroApi.Controllers
     [ApiController]
     public class SuperheroController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfwork;
-        private readonly ApiDbContext _context;
-        // Constructor that accepts the database context
-        public SuperheroController(IUnitOfWork unitOfWork, ApiDbContext context)
-        {
-            _unitOfwork = unitOfWork;
-            _context = context;
+        private readonly ISuperheroService _superheroService;
 
+        public SuperheroController(ISuperheroService superheroService)
+        {
+            _superheroService = superheroService;
         }
 
-
-        // Endpoint to get all information of a character by ID
+        /// <summary>
+        /// Get a superhero by ID
+        /// </summary>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSuperheroById(int id)
+        public async Task<IActionResult> GetSuperhero(int id)
         {
-            var superhero = await _context.Superheroes.FirstOrDefaultAsync(s => s.Id == id);
-
-            if (superhero == null)
-            {
-                return NotFound("Superhero not found.");
-            }
-
-            return Ok(superhero);
+            var result = await _superheroService.GetSuperheroByIdAsync(id);
+            return StatusCode(result.StatusCode, result.Response);
         }
-       
+
+        /// <summary>
+        /// Get a superhero by name (case insensitive)
+        /// </summary>
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetSuperheroByName(string name)
+        {
+            var result = await _superheroService.GetSuperheroByNameAsync(name);
+            return StatusCode(result.StatusCode, result.Response);
+        }
     }
 }

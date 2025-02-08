@@ -1,6 +1,6 @@
 ﻿using SuperheroApi.Core.Models;
 
-namespace SuperheroApi.Services
+namespace SuperheroApi.Service.IServices
 {
     public interface ISuperheroApiService
     {

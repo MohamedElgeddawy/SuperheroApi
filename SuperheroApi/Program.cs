@@ -4,7 +4,9 @@ using SuperheroApi.Services;
 using System.Text.Json.Serialization;
 using SuperheroApi.Core;
 using SuperheroApi.Data.Data;
-using SuperheroApi.Service.Services; 
+using SuperheroApi.Service.Services;
+using SuperheroApi.Services.Service;
+using SuperheroApi.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<SuperheroApiService>();
 
 // Add services to the container.
-
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -28,6 +29,9 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<ISuperheroService, SuperheroService>();
+builder.Services.AddScoped<ISuperheroRepository, SuperheroRepository>();
 
 // Register services
 builder.Services.AddScoped<SuperheroApiService>(); // Updated line

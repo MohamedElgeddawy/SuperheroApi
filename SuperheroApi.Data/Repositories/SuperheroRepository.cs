@@ -9,22 +9,22 @@ namespace SuperheroApi.Data.Repositories
 {
     public class SuperheroRepository : GenericRepository<Superhero>, ISuperheroRepository
     {
+        private readonly ApiDbContext _context;
+
         public SuperheroRepository(ApiDbContext context, ILogger<SuperheroRepository> logger) : base(context, logger)
         {
+            _context = context;
         }
 
-        public override async Task<Superhero> GetByName(string name)
+        public async Task<Superhero> GetByIdAsync(int id)
         {
-            var superhero = await _context.Superheroes
-                .Include(s => s.Powerstats)
-                .Include(s => s.Biography)
-                .Include(s => s.Appearance)
-                .Include(s => s.Work)
-                .Include(s => s.Connections)
-                .Include(s => s.Image)
-                .FirstOrDefaultAsync(s => s.Name == name);
+            return await _context.Superheroes.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+        }
 
-            return superhero!;
+        public async Task<Superhero> GetByNameAsync(string name)
+        {
+            return await _context.Superheroes.AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Name.ToLower() == name.ToLower());
         }
     }
 

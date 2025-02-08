@@ -2,8 +2,7 @@
 using SuperheroApi.Core.Models;
 using SuperheroApi.Data;
 using SuperheroApi.Data.Data;
-using SuperheroApi.Services;
-
+using SuperheroApi.Service.IServices;
 
 namespace SuperheroApi.API.Controllers
 {
