@@ -1,57 +1,83 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SuperheroApi.Core;
-using SuperheroApi.Data;
-using SuperheroApi.Data.Data;
 using SuperheroApi.Models;
+using SuperheroApi.Core;
+using SuperheroApi.Data.Data;
 
 namespace SuperheroApi.Data.Repositories
 {
-    public class FavoriteSuperheroRepository : GenericRepository<FavoriteSuperhero>, IFavoriteSuperheroRepository
+    public class FavoriteSuperheroRepository : IFavoriteSuperheroRepository, IGenericRepository<FavoriteSuperhero>
     {
-        public FavoriteSuperheroRepository(ApiDbContext context, ILogger logger) : base(context, logger)
+        private readonly ApiDbContext _context;
+        private readonly ILogger<FavoriteSuperheroRepository> _logger;
+
+        public FavoriteSuperheroRepository(ApiDbContext context, ILogger<FavoriteSuperheroRepository> logger)
         {
+            _context = context;
+            _logger = logger;
         }
 
-        public override async Task<FavoriteSuperhero> Add(FavoriteSuperhero entity)
+        public async Task<FavoriteSuperhero?> GetBySuperheroIdAsync(int superheroId)
         {
-            // Include related Superhero entities
-            entity.Superhero = await _context.Superheroes
-                .Include(s => s.Powerstats)
-                .Include(s => s.Biography)
-                .Include(s => s.Appearance)
-                .Include(s => s.Work)
-                .Include(s => s.Connections)
-                .Include(s => s.Image)
-                .FirstOrDefaultAsync(s => s.Id == entity.SuperheroId);
+            _logger.LogInformation("Fetching favorite superhero with ID {SuperheroId}", superheroId);
+            return await _context.FavoriteSuperheroes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(f => f.SuperheroId == superheroId);
+        }
 
-            await _dbSet.AddAsync(entity);
+        public async Task<FavoriteSuperhero?> GetByNameAsync(string name)
+        {
+            _logger.LogInformation("Fetching favorite superhero with name {Name}", name);
+            return await _context.FavoriteSuperheroes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(f => f.Superhero.Name.ToLower() == name.ToLower()); // Assuming Superhero has a Name property
+        }
+
+        public async Task<List<FavoriteSuperhero>> GetAllAsync()
+        {
+            _logger.LogInformation("Fetching all favorite superheroes.");
+            return await _context.FavoriteSuperheroes.AsNoTracking().ToListAsync();
+        }
+
+        public async Task AddAsync(FavoriteSuperhero favoriteSuperhero)
+        {
+            _logger.LogInformation("Adding superhero with ID {SuperheroId} to favorites.", favoriteSuperhero.SuperheroId);
+            await _context.FavoriteSuperheroes.AddAsync(favoriteSuperhero);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(FavoriteSuperhero favoriteSuperhero)
+        {
+            _logger.LogInformation("Deleting superhero with ID {SuperheroId} from favorites.", favoriteSuperhero.SuperheroId);
+            _context.FavoriteSuperheroes.Remove(favoriteSuperhero);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<FavoriteSuperhero?> GetByName(string name)
+        {
+            return await GetByNameAsync(name);
+        }
+
+        public async Task<FavoriteSuperhero> Add(FavoriteSuperhero entity)
+        {
+            await AddAsync(entity);
             return entity;
         }
 
-        public override async Task<bool> Delete(FavoriteSuperhero entity)
+        public async Task<IEnumerable<FavoriteSuperhero>> GetAll()
         {
-            _dbSet.Remove(entity);
+            return await GetAllAsync();
+        }
+
+        public async Task<bool> Delete(FavoriteSuperhero entity)
+        {
+            await DeleteAsync(entity);
             return true;
         }
 
-        public async Task<IEnumerable<FavoriteSuperhero>> GetFavorites()
+        public async Task<List<FavoriteSuperhero>> GetFavoritesAsync()
         {
-            return await _dbSet
-                .Include(f => f.Superhero)
-                    .ThenInclude(s => s.Powerstats)
-                .Include(f => f.Superhero)
-                    .ThenInclude(s => s.Biography)
-                .Include(f => f.Superhero)
-                    .ThenInclude(s => s.Appearance)
-                .Include(f => f.Superhero)
-                    .ThenInclude(s => s.Work)
-                .Include(f => f.Superhero)
-                    .ThenInclude(s => s.Connections)
-                .Include(f => f.Superhero)
-                    .ThenInclude(s => s.Image)
-                .ToListAsync();
+            return await GetAllAsync();
         }
     }
-
 }

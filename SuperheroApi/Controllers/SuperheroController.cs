@@ -23,7 +23,13 @@ namespace SuperheroApi.Controllers
         public async Task<IActionResult> GetSuperhero(int id)
         {
             var result = await _superheroService.GetSuperheroByIdAsync(id);
-            return StatusCode(result.StatusCode, result.Response);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(404, new { message = result.Message });
+            }
+
+            return Ok(result.Data);
         }
 
         /// <summary>
@@ -33,7 +39,14 @@ namespace SuperheroApi.Controllers
         public async Task<IActionResult> GetSuperheroByName(string name)
         {
             var result = await _superheroService.GetSuperheroByNameAsync(name);
-            return StatusCode(result.StatusCode, result.Response);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(404, new { message = result.Message });
+            }
+
+            return Ok(result.Data);
         }
+
     }
 }

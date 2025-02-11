@@ -64,19 +64,19 @@ namespace SuperheroApi.Data.Migrations
                     Powerstats_Durability = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Powerstats_Power = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Powerstats_Combat = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_AlterEgos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_AliasesJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_FirstAppearance = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Biography_Alignment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Appearance_Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Appearance_Race = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Biography_FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography_AlterEgos = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography_Aliases = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography_PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography_FirstAppearance = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography_Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Biography_Alignment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Appearance_EyeColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Appearance_HairColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Appearance_Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Appearance_Race = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Appearance_Height = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Appearance_Weight = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Appearance_EyeColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Appearance_HairColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Work_Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Work_Base = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Connections_GroupAffiliation = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -215,8 +215,8 @@ namespace SuperheroApi.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Superheroes",
-                columns: new[] { "Id", "Appearance_EyeColor", "Appearance_Gender", "Appearance_HairColor", "Appearance_Height", "Appearance_Race", "Appearance_Weight", "Biography_AliasesJson", "Biography_Alignment", "Biography_AlterEgos", "Biography_FirstAppearance", "Biography_FullName", "Biography_PlaceOfBirth", "Biography_Publisher", "Connections_GroupAffiliation", "Connections_Relatives", "Image_Url", "Powerstats_Combat", "Powerstats_Durability", "Powerstats_Intelligence", "Powerstats_Power", "Powerstats_Speed", "Powerstats_Strength", "Name", "Response", "Work_Base", "Work_Occupation" },
-                values: new object[] { 1, "Yellow", "Male", "No Hair", "6'8, 203 cm", "Human", "980 lb, 441 kg", "[\"Rick Jones\"]", "good", "No alter egos found.", "Hulk Vol 2 #2 (April, 2008)", "Richard Milhouse Jones", "Scarsdale, Arizona", "Marvel Comics", "Hulk Family; Excelsior (sponsor), Avengers (honorary member)", "Marlo Chandler-Jones (wife); Polly (aunt)", "https://www.superherodb.com/pictures2/portraits/10/100/10060.jpg", "64", "80", "38", "24", "17", "100", "A-Bomb", "success", "-", "Musician, adventurer, author; formerly talk show host" });
+                columns: new[] { "Id", "Appearance_EyeColor", "Appearance_Gender", "Appearance_HairColor", "Appearance_Height", "Appearance_Race", "Appearance_Weight", "Biography_Aliases", "Biography_Alignment", "Biography_AlterEgos", "Biography_FirstAppearance", "Biography_FullName", "Biography_PlaceOfBirth", "Biography_Publisher", "Connections_GroupAffiliation", "Connections_Relatives", "Image_Url", "Powerstats_Combat", "Powerstats_Durability", "Powerstats_Intelligence", "Powerstats_Power", "Powerstats_Speed", "Powerstats_Strength", "Name", "Response", "Work_Base", "Work_Occupation" },
+                values: new object[] { 1, "Yellow", "Male", "No Hair", "6'8, 203 cm", "Human", "980 lb, 441 kg", null, "good", "No alter egos found.", "Hulk Vol 2 #2 (April, 2008)", "Richard Milhouse Jones", "Scarsdale, Arizona", "Marvel Comics", "Hulk Family; Excelsior (sponsor), Avengers (honorary member)", "Marlo Chandler-Jones (wife); Polly (aunt)", "https://www.superherodb.com/pictures2/portraits/10/100/10060.jpg", "64", "80", "38", "24", "17", "100", "A-Bomb", "success", "-", "Musician, adventurer, author; formerly talk show host" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -23,7 +23,7 @@ namespace SuperheroApi.Service.Services
             {
                 if (id <= 0)
                 {
-                    return new ServiceResponse<Superhero>(StatusCodes.Status400BadRequest, "Invalid ID. ID must be greater than zero.");
+                    return new ServiceResponse<Superhero>(null, false, "Invalid ID. ID must be greater than zero.");
                 }
 
                 var superhero = await _repository.GetByIdAsync(id);
@@ -31,15 +31,15 @@ namespace SuperheroApi.Service.Services
                 if (superhero == null)
                 {
                     _logger.LogWarning("Superhero with ID {Id} not found.", id);
-                    return new ServiceResponse<Superhero>(StatusCodes.Status404NotFound, $"Superhero with ID {id} not found.");
+                    return new ServiceResponse<Superhero>(null, false, $"Superhero with ID {id} not found.");
                 }
 
-                return new ServiceResponse<Superhero>(StatusCodes.Status200OK, superhero);
+                return new ServiceResponse<Superhero>(superhero, true, "Superhero retrieved successfully.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving superhero with ID {Id}", id);
-                return new ServiceResponse<Superhero>(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
+                return new ServiceResponse<Superhero>(null, false, "An unexpected error occurred.");
             }
         }
 
@@ -49,7 +49,7 @@ namespace SuperheroApi.Service.Services
             {
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    return new ServiceResponse<Superhero>(StatusCodes.Status400BadRequest, "Superhero name cannot be empty.");
+                    return new ServiceResponse<Superhero>(null, false, "Superhero name cannot be empty.");
                 }
 
                 var superhero = await _repository.GetByNameAsync(name);
@@ -57,16 +57,17 @@ namespace SuperheroApi.Service.Services
                 if (superhero == null)
                 {
                     _logger.LogWarning("Superhero with name {Name} not found.", name);
-                    return new ServiceResponse<Superhero>(StatusCodes.Status404NotFound, $"Superhero with name '{name}' not found.");
+                    return new ServiceResponse<Superhero>(null, false, $"Superhero with name '{name}' not found.");
                 }
 
-                return new ServiceResponse<Superhero>(StatusCodes.Status200OK, superhero);
+                return new ServiceResponse<Superhero>(superhero, true, "Superhero retrieved successfully.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving superhero with name {Name}", name);
-                return new ServiceResponse<Superhero>(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
+                return new ServiceResponse<Superhero>(null, false, "An unexpected error occurred.");
             }
         }
+
     }
 }

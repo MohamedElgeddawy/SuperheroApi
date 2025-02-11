@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
@@ -7,6 +8,9 @@ namespace SuperheroApi.Core.Models
     public class Superhero
     {
         public string? Response { get; set; }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public PowerStats Powerstats { get; set; }
@@ -29,33 +33,41 @@ namespace SuperheroApi.Core.Models
 
     public class Biography
     {
-        public string FullName { get; set; }
-        public string AlterEgos { get; set; }
+        public string? FullName { get; set; }
+        public string? AlterEgos { get; set; }
+        public List<string>? Aliases { get; set; }
+        public string? PlaceOfBirth { get; set; }
 
-        public string AliasesJson { get; set; }  // ✅ Store as JSON in DB
+        // ✅ Allow NULL values
+        public string? FirstAppearance { get; set; }
 
-        [NotMapped] // ❌ EF Core ignores this during migrations
-        public List<string> Aliases
-        {
-            get => string.IsNullOrEmpty(AliasesJson) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(AliasesJson);
-            set => AliasesJson = JsonSerializer.Serialize(value);
-        }
-
-        public string PlaceOfBirth { get; set; }
-        public string FirstAppearance { get; set; }
-        public string Publisher { get; set; }
-        public string Alignment { get; set; }
+        public string? Publisher { get; set; }
+        public string? Alignment { get; set; }
     }
+
 
     public class Appearance
     {
-        public string Gender { get; set; }
-        public string Race { get; set; }
-        public string Height { get; set; }  // ✅ Convert List<string> to string (comma-separated values)
-        public string Weight { get; set; }  // ✅ Convert List<string> to string
-        public string EyeColor { get; set; }
-        public string HairColor { get; set; }
+        public string? EyeColor { get; set; }
+        public string? HairColor { get; set; }
+        public string? Gender { get; set; }
+        public string? Race { get; set; }
+
+        // Store List<string> as JSON
+        [Column(TypeName = "nvarchar(max)")]
+        public string Height { get; set; }
+
+        [Column(TypeName = "nvarchar(max)")]
+        public string Weight { get; set; }
+
+        // Convert List<string> to JSON before saving to DB
+        public List<string> GetHeightList() => string.IsNullOrEmpty(Height) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(Height);
+        public void SetHeightList(List<string> heights) => Height = JsonSerializer.Serialize(heights);
+
+        public List<string> GetWeightList() => string.IsNullOrEmpty(Weight) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(Weight);
+        public void SetWeightList(List<string> weights) => Weight = JsonSerializer.Serialize(weights);
     }
+
 
 
     public class Work

@@ -78,23 +78,16 @@ namespace SuperheroApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the favorite superhero.");
             }
         }
-        
+
 
         // Endpoint to get the list of favorite superheroes
-        [HttpGet("GetFavorites")]
-        public async Task<IActionResult> GetFavorites()
-        {
-            try
-            {
-                var favorites = await _unitOfwork.FavoriteSuperheroes.GetFavorites();
-                return Ok(favorites);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (logging code not shown here)
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the favorite superheroes.");
-            }
-        }
+        //[HttpGet("favorites")]
+        //public async Task<IActionResult> GetFavorites()
+        //{
+        //    var result = await _superheroExternalService.GetFavoritesAsync();
+        //    return StatusCode(result.StatusCode, result.Response);
+        //}
+
 
         // Endpoint to Delete superheroe by name of favoritesuperheroes
         [HttpDelete("favorites/{name}")]

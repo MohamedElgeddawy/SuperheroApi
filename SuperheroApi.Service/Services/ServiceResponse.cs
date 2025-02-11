@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SuperheroApi.Service.Services
 {
     public class ServiceResponse<T>
     {
-        public int StatusCode { get; set; }  // HTTP status code
-        public object Response { get; set; } // Data or error message
+        public T Data { get; set; }
+        public bool IsSuccess { get; set; } = true;
+        public string Message { get; set; } = "Success";
 
-        public ServiceResponse(int statusCode, object response)
+        // ✅ Default constructor (no parameters)
+        public ServiceResponse() { }
+
+        public ServiceResponse(T data, bool isSuccess, string message)
         {
-            StatusCode = statusCode;
-            Response = response;
+            Data = data;
+            IsSuccess = isSuccess;
+            Message = message;
         }
     }
+
+
 }

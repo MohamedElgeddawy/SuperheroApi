@@ -26,6 +26,15 @@ namespace SuperheroApi.Data.Repositories
             return await _context.Superheroes.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Name.ToLower() == name.ToLower());
         }
+        public async Task AddAsync(Superhero superhero)
+        {
+            if (superhero == null) throw new ArgumentNullException(nameof(superhero));
+
+            superhero.Id = 0; // ✅ Ensure Id is not explicitly set to avoid Identity Insert error
+
+            _context.Superheroes.Add(superhero);
+            await _context.SaveChangesAsync();
+        }
     }
 
 }

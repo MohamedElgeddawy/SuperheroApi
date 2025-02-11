@@ -12,7 +12,7 @@ using SuperheroApi.Data.Data;
 namespace SuperheroApi.Data.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20250207192120_InitialCreate")]
+    [Migration("20250211164253_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -328,15 +328,12 @@ namespace SuperheroApi.Data.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<string>("EyeColor")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Gender")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("HairColor")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Height")
@@ -344,7 +341,6 @@ namespace SuperheroApi.Data.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Race")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Weight")
@@ -376,32 +372,25 @@ namespace SuperheroApi.Data.Migrations
                             b1.Property<int>("SuperheroId")
                                 .HasColumnType("int");
 
-                            b1.Property<string>("AliasesJson")
-                                .IsRequired()
+                            b1.PrimitiveCollection<string>("Aliases")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Alignment")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("AlterEgos")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("FirstAppearance")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("FullName")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("PlaceOfBirth")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Publisher")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("SuperheroId");
@@ -415,7 +404,6 @@ namespace SuperheroApi.Data.Migrations
                                 new
                                 {
                                     SuperheroId = 1,
-                                    AliasesJson = "[\"Rick Jones\"]",
                                     Alignment = "good",
                                     AlterEgos = "No alter egos found.",
                                     FirstAppearance = "Hulk Vol 2 #2 (April, 2008)",

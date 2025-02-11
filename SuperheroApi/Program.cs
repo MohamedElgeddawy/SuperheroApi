@@ -7,39 +7,55 @@ using SuperheroApi.Data.Data;
 using SuperheroApi.Service.Services;
 using SuperheroApi.Services.Service;
 using SuperheroApi.Data.Repositories;
+using SuperheroApi.Services.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register HttpClient
-builder.Services.AddHttpClient<SuperheroApiService>();
+// builder.Services.AddHttpClient<SuperheroApiService>();
 
-// Add services to the container.
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    });
+// ? Add services to the container (only one `AddControllers()`)
+builder.Services.AddControllers(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+})
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApiDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+// Register AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+// Register Logging
+builder.Services.AddLogging();
+
+// ? Register Database Context
+builder.Services.AddDbContext<ApiDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+// Register Services
 builder.Services.AddScoped<ISuperheroService, SuperheroService>();
 builder.Services.AddScoped<ISuperheroRepository, SuperheroRepository>();
-
-// Register services
-builder.Services.AddScoped<SuperheroApiService>(); // Updated line
+builder.Services.AddScoped<IFavoriteSuperheroRepository, FavoriteSuperheroRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// ? Register External API Client
+builder.Services.AddHttpClient<ISuperheroExternalService, SuperheroExternalService>();
+builder.Services.AddScoped<ISuperheroExternalService, SuperheroExternalService>();
+
+// ? Register Caching
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ? Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -47,9 +63,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
