@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
-namespace SuperheroApi.Core.Models
+namespace SuperheroApi.Core.Models.Superhero
 {
     public class Superhero
     {
@@ -37,8 +37,6 @@ namespace SuperheroApi.Core.Models
         public string? AlterEgos { get; set; }
         public List<string>? Aliases { get; set; }
         public string? PlaceOfBirth { get; set; }
-
-        // ✅ Allow NULL values
         public string? FirstAppearance { get; set; }
 
         public string? Publisher { get; set; }
@@ -53,14 +51,12 @@ namespace SuperheroApi.Core.Models
         public string? Gender { get; set; }
         public string? Race { get; set; }
 
-        // Store List<string> as JSON
         [Column(TypeName = "nvarchar(max)")]
         public string Height { get; set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public string Weight { get; set; }
 
-        // Convert List<string> to JSON before saving to DB
         public List<string> GetHeightList() => string.IsNullOrEmpty(Height) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(Height);
         public void SetHeightList(List<string> heights) => Height = JsonSerializer.Serialize(heights);
 

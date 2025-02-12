@@ -1,13 +1,13 @@
-﻿using SuperheroApi.Core.Models;
-using AutoMapper;
+﻿using AutoMapper;
+using SuperheroApi.Core.Models.Superhero;
 
-namespace SuperheroApi.Service.Services
+namespace SuperheroApi.Core.Models
 {
     public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            CreateMap<SuperheroApiResponse, Superhero>()
+            CreateMap<SuperheroApiResponse, Superhero.Superhero>()
                 .ForMember(dest => dest.Appearance, opt => opt.MapFrom(src => src.Appearance ?? new AppearanceApiResponse()))
                 .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography ?? new BiographyApiResponse()))
                 .ForMember(dest => dest.Powerstats, opt => opt.MapFrom(src => src.Powerstats ?? new PowerstatsApiResponse()))

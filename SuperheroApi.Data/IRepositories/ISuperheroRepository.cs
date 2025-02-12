@@ -1,4 +1,4 @@
-﻿using SuperheroApi.Core.Models;
+﻿using SuperheroApi.Core.Models.Superhero;
 namespace SuperheroApi.Core
 {
     public interface ISuperheroRepository : IGenericRepository<Superhero>

@@ -6,12 +6,12 @@ using SuperheroApi.Data.Data;
 
 namespace SuperheroApi.Data.Repositories
 {
-    public class FavoriteSuperheroRepository : IFavoriteSuperheroRepository, IGenericRepository<FavoriteSuperhero>
+    public class FavoriteSuperheroRepository : GenericRepository<FavoriteSuperhero>, IFavoriteSuperheroRepository
     {
         private readonly ApiDbContext _context;
         private readonly ILogger<FavoriteSuperheroRepository> _logger;
 
-        public FavoriteSuperheroRepository(ApiDbContext context, ILogger<FavoriteSuperheroRepository> logger)
+        public FavoriteSuperheroRepository(ApiDbContext context, ILogger<FavoriteSuperheroRepository> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
@@ -45,6 +45,10 @@ namespace SuperheroApi.Data.Repositories
             await _context.FavoriteSuperheroes.AddAsync(favoriteSuperhero);
             await _context.SaveChangesAsync();
         }
+        public async Task<List<FavoriteSuperhero>> GetFavoritesAsync()
+        {
+            return await GetAllAsync();
+        }
 
         public async Task DeleteAsync(FavoriteSuperhero favoriteSuperhero)
         {
@@ -53,31 +57,8 @@ namespace SuperheroApi.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<FavoriteSuperhero?> GetByName(string name)
-        {
-            return await GetByNameAsync(name);
-        }
 
-        public async Task<FavoriteSuperhero> Add(FavoriteSuperhero entity)
-        {
-            await AddAsync(entity);
-            return entity;
-        }
-
-        public async Task<IEnumerable<FavoriteSuperhero>> GetAll()
-        {
-            return await GetAllAsync();
-        }
-
-        public async Task<bool> Delete(FavoriteSuperhero entity)
-        {
-            await DeleteAsync(entity);
-            return true;
-        }
-
-        public async Task<List<FavoriteSuperhero>> GetFavoritesAsync()
-        {
-            return await GetAllAsync();
-        }
+      
+        
     }
 }

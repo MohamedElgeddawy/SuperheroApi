@@ -10,9 +10,7 @@ namespace SuperheroApi.Controllers
     [ApiController]
     public class SuperheroFromExternalAPIController(ISuperheroExternalService _superheroExternalService) : ControllerBase
     {
-        /// <summary>
-        /// Get a superhero by ID from an external API
-        /// </summary>
+   
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuperheroFromExternalAPI(int id)
         {
@@ -26,9 +24,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        /// <summary>
-        /// Get all favorite superheroes
-        /// </summary>
+        
         [HttpGet("favorites")]
         public async Task<IActionResult> GetFavorites()
         {
@@ -42,9 +38,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        /// <summary>
-        /// Add a superhero to favorites
-        /// </summary>
+       
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavoriteSuperhero([FromBody] int superheroId)
         {

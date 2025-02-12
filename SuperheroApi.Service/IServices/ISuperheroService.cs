@@ -1,4 +1,5 @@
 ﻿using SuperheroApi.Core.Models;
+using SuperheroApi.Core.Models.Superhero;
 using SuperheroApi.Service.Services;
 using System.Threading.Tasks;
 

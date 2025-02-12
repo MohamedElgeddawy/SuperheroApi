@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using SuperheroApi.Core.Models;
 using SuperheroApi.Core;
 using SuperheroApi.Services.Service;
+using SuperheroApi.Core.Models.Superhero;
 
 namespace SuperheroApi.Service.Services
 {

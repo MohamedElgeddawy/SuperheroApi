@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SuperheroApi.Core;
-using SuperheroApi.Core.Models;
+using SuperheroApi.Core.Models.Superhero;
 using SuperheroApi.Data.Data;
 
 
@@ -30,7 +30,7 @@ namespace SuperheroApi.Data.Repositories
         {
             if (superhero == null) throw new ArgumentNullException(nameof(superhero));
 
-            superhero.Id = 0; // ✅ Ensure Id is not explicitly set to avoid Identity Insert error
+            superhero.Id = 0; 
 
             _context.Superheroes.Add(superhero);
             await _context.SaveChangesAsync();

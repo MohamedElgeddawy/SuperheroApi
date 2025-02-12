@@ -16,9 +16,7 @@ namespace SuperheroApi.Controllers
             _superheroService = superheroService;
         }
 
-        /// <summary>
-        /// Get a superhero by ID
-        /// </summary>
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuperhero(int id)
         {
@@ -32,9 +30,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        /// <summary>
-        /// Get a superhero by name (case insensitive)
-        /// </summary>
+    
         [HttpGet("name/{name}")]
         public async Task<IActionResult> GetSuperheroByName(string name)
         {

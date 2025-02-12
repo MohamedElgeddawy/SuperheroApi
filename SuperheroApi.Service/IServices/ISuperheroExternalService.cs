@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using SuperheroApi.Core.Models;
+﻿using SuperheroApi.Core.Models;
+using SuperheroApi.Core.Models.Superhero;
 using SuperheroApi.Models;
-using SuperheroApi.Service.Services;
+
 
 namespace SuperheroApi.Services.Services;
 

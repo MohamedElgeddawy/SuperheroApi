@@ -8,12 +8,11 @@ using SuperheroApi.Service.Services;
 using SuperheroApi.Services.Service;
 using SuperheroApi.Data.Repositories;
 using SuperheroApi.Services.Services;
+using SuperheroApi.Core.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register HttpClient
-// builder.Services.AddHttpClient<SuperheroApiService>();
 
 // ? Add services to the container (only one `AddControllers()`)
 builder.Services.AddControllers(options =>

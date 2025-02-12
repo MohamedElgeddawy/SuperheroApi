@@ -21,7 +21,6 @@ namespace SuperheroApi.Data.Repositories
 
         public virtual async Task<T> GetByName(string name)
         {
-            // search by name
             return await _dbSet.FirstOrDefaultAsync();
         }
         public virtual async Task<T> Add(T entity)

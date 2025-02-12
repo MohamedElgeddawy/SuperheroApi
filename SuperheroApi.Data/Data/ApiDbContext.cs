@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SuperheroApi.Models;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using SuperheroApi.Core.Models;
+using SuperheroApi.Core.Models.Superhero;
 
 namespace SuperheroApi.Data.Data
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace SuperheroApi.Service.Services
+namespace SuperheroApi.Core.Models
 {
     public class ServiceResponse<T>
     {
@@ -13,7 +13,7 @@ namespace SuperheroApi.Service.Services
         public bool IsSuccess { get; set; } = true;
         public string Message { get; set; } = "Success";
 
-        // ✅ Default constructor (no parameters)
+        
         public ServiceResponse() { }
 
         public ServiceResponse(T data, bool isSuccess, string message)
