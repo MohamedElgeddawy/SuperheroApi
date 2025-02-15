@@ -162,6 +162,9 @@ public class SuperheroExternalService : ISuperheroExternalService
         }
     }
 
+    /// <summary>
+    /// Add favorite superheroe To database.
+    /// </summary>
     public async Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId)
     {
         try

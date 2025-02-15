@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SuperheroApi.Services;
 using SuperheroApi.Services.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SuperheroApi.Controllers
 {
@@ -30,7 +31,6 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-    
         [HttpGet("name/{name}")]
         public async Task<IActionResult> GetSuperheroByName(string name)
         {
@@ -43,6 +43,7 @@ namespace SuperheroApi.Controllers
 
             return Ok(result.Data);
         }
+
 
     }
 }

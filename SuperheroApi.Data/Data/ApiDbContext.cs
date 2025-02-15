@@ -5,11 +5,12 @@ using SuperheroApi.Models;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using SuperheroApi.Core.Models.Superhero;
+using SuperheroApi.Core.Models;
 
 namespace SuperheroApi.Data.Data
 {
     // Represents the database context for the application
-    public class ApiDbContext : IdentityDbContext<IdentityUser>
+    public class ApiDbContext : IdentityDbContext<AppUser>
     {
         // DbSet properties represent collections of the specified entity types in the database
         public DbSet<Superhero> Superheroes { get; set; }
@@ -21,18 +22,23 @@ namespace SuperheroApi.Data.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Optional: Customize Identity table names if needed
+            modelBuilder.Entity<AppUser>().ToTable("Users");
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
+
             // Mark nested models as owned types
             modelBuilder.Entity<Superhero>().OwnsOne(s => s.Powerstats).HasData(
                 new { SuperheroId = 1, Intelligence = "38", Strength = "100", Speed = "17", Durability = "80", Power = "24", Combat = "64" }
             );
 
             modelBuilder.Entity<Superhero>().OwnsOne(s => s.Biography).HasData(
-    new { SuperheroId = 1, FullName = "Richard Milhouse Jones", AlterEgos = "No alter egos found.", AliasesJson = "[\"Rick Jones\"]", PlaceOfBirth = "Scarsdale, Arizona", FirstAppearance = "Hulk Vol 2 #2 (April, 2008)", Publisher = "Marvel Comics", Alignment = "good" }
-);
+                new { SuperheroId = 1, FullName = "Richard Milhouse Jones", AlterEgos = "No alter egos found.", AliasesJson = "[\"Rick Jones\"]", PlaceOfBirth = "Scarsdale, Arizona", FirstAppearance = "Hulk Vol 2 #2 (April, 2008)", Publisher = "Marvel Comics", Alignment = "good" }
+            );
 
             modelBuilder.Entity<Superhero>().OwnsOne(s => s.Appearance).HasData(
-         new { SuperheroId = 1, Gender = "Male", Race = "Human", Height = "6'8, 203 cm", Weight = "980 lb, 441 kg", EyeColor = "Yellow", HairColor = "No Hair" }
-             );
+                new { SuperheroId = 1, Gender = "Male", Race = "Human", Height = "6'8, 203 cm", Weight = "980 lb, 441 kg", EyeColor = "Yellow", HairColor = "No Hair" }
+            );
 
             modelBuilder.Entity<Superhero>().OwnsOne(s => s.Work).HasData(
                 new { SuperheroId = 1, Occupation = "Musician, adventurer, author; formerly talk show host", Base = "-" }

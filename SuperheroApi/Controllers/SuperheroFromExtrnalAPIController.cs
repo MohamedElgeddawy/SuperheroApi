@@ -3,6 +3,7 @@ using SuperheroApi.Services;
 using SuperheroApi.Models;
 using System.Threading.Tasks;
 using SuperheroApi.Services.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SuperheroApi.Controllers
 {
@@ -38,7 +39,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-       
+        //[Authorize]
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavoriteSuperhero([FromBody] int superheroId)
         {
