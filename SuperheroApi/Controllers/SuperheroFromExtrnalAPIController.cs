@@ -39,7 +39,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavoriteSuperhero([FromBody] int superheroId)
         {
