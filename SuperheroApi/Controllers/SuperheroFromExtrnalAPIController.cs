@@ -41,7 +41,7 @@ namespace SuperheroApi.Controllers
 
         [Authorize]
         [HttpPost("favorites")]
-        public async Task<IActionResult> AddFavoriteSuperhero([FromBody] int superheroId)
+        public async Task<IActionResult> AddFavoriteSuperhero(int superheroId)
         {
             var result = await _superheroExternalService.AddFavoriteSuperheroAsync(superheroId);
 
