@@ -27,6 +27,12 @@ namespace SuperheroApi.Data.Data
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
 
+            modelBuilder.Entity<FavoriteSuperhero>()
+                .HasOne(f => f.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Mark nested models as owned types
             modelBuilder.Entity<Superhero>().OwnsOne(s => s.Powerstats).HasData(
                 new { SuperheroId = 1, Intelligence = "38", Strength = "100", Speed = "17", Durability = "80", Power = "24", Combat = "64" }

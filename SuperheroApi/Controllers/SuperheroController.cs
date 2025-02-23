@@ -33,6 +33,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
+        [Authorize]
         [HttpGet("name/{name}")]
         public async Task<IActionResult> GetSuperheroByName(string name)
         {

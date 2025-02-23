@@ -4,14 +4,21 @@ using SuperheroApi.Models;
 using System.Threading.Tasks;
 using SuperheroApi.Services.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace SuperheroApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SuperheroFromExternalAPIController(ISuperheroExternalService _superheroExternalService) : ControllerBase
+    public class SuperheroFromExternalAPIController : ControllerBase
     {
-   
+        private readonly ISuperheroExternalService _superheroExternalService;
+
+        public SuperheroFromExternalAPIController(ISuperheroExternalService superheroExternalService)
+        {
+            _superheroExternalService = superheroExternalService;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuperheroFromExternalAPI(int id)
         {
@@ -25,7 +32,6 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        
         [HttpGet("favorites")]
         public async Task<IActionResult> GetFavorites()
         {
@@ -43,15 +49,22 @@ namespace SuperheroApi.Controllers
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavoriteSuperhero(int superheroId)
         {
-            var result = await _superheroExternalService.AddFavoriteSuperheroAsync(superheroId);
+            // ✅ Retrieve the logged-in user ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User must be logged in." });
+            }
+
+            // ✅ Pass userId when calling the service
+            var result = await _superheroExternalService.AddFavoriteSuperheroAsync(superheroId, userId);
 
             if (!result.IsSuccess)
             {
-                return StatusCode(400, new { message = result.Message });
+                return BadRequest(new { message = result.Message });
             }
 
             return Ok(new { message = result.Message });
         }
-
     }
 }
