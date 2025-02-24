@@ -1,112 +1,130 @@
-# SuperheroApi
+# Superhero API
 
-## Overview
-The `SuperheroApi` is a RESTful API built using ASP.NET Core that provides information about superheroes. It leverages the repository pattern for data access, implements authentication to secure endpoints, and uses an in-memory cache to improve performance.
+## Table of Contents
+1. [Introduction](#introduction)
+   - [Overview](#overview)
+   - [Project Overview](#project-overview)
+2. [Architecture](#architecture)
+   - [Components](#components)
+3. [Database](#database)
+   - [Schema](#schema)
+   - [Data Models](#data-models)
+4. [API Guide](#api-guide)
+   - [Request Flow](#request-flow)
+   - [API Overview](#api-overview)
+   - [Auth Details](#auth-details)
+   - [Super Hero Details](#super-hero-details)
+   - [Favorite List Details](#favorite-list-details)
+   - [Response Messages](#response-messages)
+5. [Integration Services](#integration-services)
+   - [External Services](#external-services)
+6. [Setup and Configuration](#setup-and-configuration)
+7. [Getting Started](#getting-started)
+   - [Development Environment](#development-environment)
+   - [Dependencies](#dependencies)
 
-## Features
-1. **Superhero Data Retrieval**
-   - Get a list of all superheroes.
-   - Get details of a specific superhero by ID.
+---
 
-2. **Repository Pattern**
-   - Separation of concerns between business logic and data access.
-   - Simplified unit testing.
+## Introduction
 
-3. **Authentication**
-   - Secured endpoints using JWT (JSON Web Tokens).
-   - Role-based authorization.
+### Overview
+The **Superhero API** is a powerful RESTful service that provides access to superhero data, including authentication, favorites, and external API integrations.
 
-4. **In-Memory Cache**
-   - Improved performance by caching frequently accessed data.
-   - Reduces database load.
+### Project Overview
+The project follows a clean architecture pattern, ensuring modularity, scalability, and ease of maintenance.
 
-## Getting Started
+---
 
-### Prerequisites
-- .NET Core SDK 8.0.
-- An IDE like Visual Studio or VS Code.
+## Architecture
 
-### Installation
+### Components
+The system follows the **Repository Pattern** for managing data access and separation of concerns.
+
+![Repository Pattern](./README/RepositoryPattern.png)
+
+---
+
+## Database
+
+### Schema
+The database structure follows a relational model with user authentication, superhero details, and favorite superheroes.
+
+![Database Schema](./README/DB_Shecma.PNG)
+
+### Data Models
+- **Users**: Manages authentication and authorization.
+- **Superheroes**: Stores superhero-related details.
+- **FavoriteSuperheroes**: Stores user-favorite superheroes.
+
+---
+
+## API Guide
+
+### Request Flow
+The API follows a structured flow from **request to response** with authentication and validation layers.
+
+### API Overview
+Here is a list of the available API endpoints:
+
+![API Endpoints](./README/swagger.PNG)
+
+### Auth Details
+- `POST /api/Account/register` - Registers a new user.
+- `POST /api/Account/login` - Authenticates an existing user.
+
+### Super Hero Details
+- `GET /api/Superhero/{id}` - Retrieves superhero details by ID.
+- `GET /api/Superhero/name/{name}` - Retrieves superhero details by name.
+
+### Favorite List Details
+- `GET /api/SuperheroFromExternalAPI/favorites` - Retrieves a user's favorite superheroes.
+- `POST /api/SuperheroFromExternalAPI/favorites` - Adds a superhero to the user's favorite list.
+
+### Response Messages
+All API responses follow a consistent format:
+```json
+{
+  "status": "success",
+  "message": "Data retrieved successfully",
+  "data": { }
+}
+```
+
+---
+
+## Integration Services
+
+### External Services
+This API integrates with external superhero data sources to fetch and store relevant information
+for details [Superheroapi](https://superheroapi.com/).
+
+
+---
+
+## Setup and Configuration
+Ensure that you have the following installed:
+- .NET Core
+- SQL Server
+- Entity Framework Core
+
+### Getting Started
+
+#### Development Environment
 1. Clone the repository:
    ```sh
-   git clone https://github.com/MohamedElgeddawy/SuperheroApi.git
-   cd SuperheroApi
+   git clone https://github.com/MohamedElgeddawy/superhero-api.git
    ```
-
-2. Restore dependencies:
+2. Navigate to the project directory:
+   ```sh
+   cd superhero-api
+   ```
+3. Install dependencies:
    ```sh
    dotnet restore
    ```
 
-3. Set up the database (if applicable):
-   - This project might use an in-memory database or a real database depending on configuration.
-
-4. Run the application:
-   ```sh
-   dotnet run
-   ```
-
-### Endpoints
-- **Get All Superheroes**:
-  ```
-  GET /api/superheroes
-  ```
-  Response:
-  ```json
-  [
-    {
-      "id": 1,
-      "name": "Superman",
-      "power": "Flight"
-    },
-    ...
-  ]
-  ```
-
-- **Get Superhero by ID**:
-  ```
-  GET /api/superheroes/{id}
-  ```
-  Response:
-  ```json
-  {
-    "id": 1,
-    "name": "Superman",
-    "power": "Flight"
-  }
-  ```
-
-## Repository Pattern
-The repository pattern is a design pattern that abstracts the data layer from the business logic. It separates the responsibilities, making the code more maintainable and testable.
-
-### Implementation Details
-- **Interfaces**: Define interfaces for repositories (`ISuperheroRepository`).
-- **Concrete Classes**: Implement these interfaces (`SuperheroRepository`).
-- **Dependency Injection**: Register the repository in the `Startup.cs` file to inject it into controllers.
-
-
-
-## Authentication
-This project uses JWT for securing endpoints. Users must provide valid credentials to obtain a token, which they then use to access protected resources.
-
-### Implementation Details
-- **JWT Configuration**: Configure JWT in `Startup.cs`.
-- **Login Endpoint**: Create an endpoint to authenticate users and return a token.
-- **Authorization Attributes**: Use `[Authorize]` attribute to protect endpoints.
-
-
-
-## In-Memory Cache
-In-memory caching is used to store frequently accessed data in memory, reducing the need to repeatedly query the database.
-
-### Implementation Details
-- **Cache Service**: Inject `IMemoryCache` into your services/controllers.
-- **Set/Get Cache**: Use methods like `Set`, `Get`, `TryGetValue` to manage cached data.
-
-
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+#### Dependencies
+- ASP.NET Core Web API
+- Entity Framework Core
+- JWT Authentication
 

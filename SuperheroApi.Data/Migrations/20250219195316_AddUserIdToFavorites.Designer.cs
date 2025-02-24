@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuperheroApi.Data.Data;
 
@@ -11,9 +12,11 @@ using SuperheroApi.Data.Data;
 namespace SuperheroApi.Data.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250219195316_AddUserIdToFavorites")]
+    partial class AddUserIdToFavorites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,7 +244,7 @@ namespace SuperheroApi.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Superheroes", (string)null);
+                    b.ToTable("Superheroes");
 
                     b.HasData(
                         new
@@ -277,7 +280,7 @@ namespace SuperheroApi.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavoriteSuperheroes", (string)null);
+                    b.ToTable("FavoriteSuperheroes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -360,7 +363,7 @@ namespace SuperheroApi.Data.Migrations
 
                             b1.HasKey("SuperheroId");
 
-                            b1.ToTable("Superheroes", (string)null);
+                            b1.ToTable("Superheroes");
 
                             b1.WithOwner()
                                 .HasForeignKey("SuperheroId");
@@ -406,7 +409,7 @@ namespace SuperheroApi.Data.Migrations
 
                             b1.HasKey("SuperheroId");
 
-                            b1.ToTable("Superheroes", (string)null);
+                            b1.ToTable("Superheroes");
 
                             b1.WithOwner()
                                 .HasForeignKey("SuperheroId");
@@ -439,7 +442,7 @@ namespace SuperheroApi.Data.Migrations
 
                             b1.HasKey("SuperheroId");
 
-                            b1.ToTable("Superheroes", (string)null);
+                            b1.ToTable("Superheroes");
 
                             b1.WithOwner()
                                 .HasForeignKey("SuperheroId");
@@ -464,7 +467,7 @@ namespace SuperheroApi.Data.Migrations
 
                             b1.HasKey("SuperheroId");
 
-                            b1.ToTable("Superheroes", (string)null);
+                            b1.ToTable("Superheroes");
 
                             b1.WithOwner()
                                 .HasForeignKey("SuperheroId");
@@ -508,7 +511,7 @@ namespace SuperheroApi.Data.Migrations
 
                             b1.HasKey("SuperheroId");
 
-                            b1.ToTable("Superheroes", (string)null);
+                            b1.ToTable("Superheroes");
 
                             b1.WithOwner()
                                 .HasForeignKey("SuperheroId");
@@ -541,7 +544,7 @@ namespace SuperheroApi.Data.Migrations
 
                             b1.HasKey("SuperheroId");
 
-                            b1.ToTable("Superheroes", (string)null);
+                            b1.ToTable("Superheroes");
 
                             b1.WithOwner()
                                 .HasForeignKey("SuperheroId");

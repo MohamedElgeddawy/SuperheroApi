@@ -4,14 +4,21 @@ using SuperheroApi.Models;
 using System.Threading.Tasks;
 using SuperheroApi.Services.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace SuperheroApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SuperheroFromExternalAPIController(ISuperheroExternalService _superheroExternalService) : ControllerBase
+    public class SuperheroFromExternalAPIController : ControllerBase
     {
-   
+        private readonly ISuperheroExternalService _superheroExternalService;
+        private readonly ILogger<SuperheroFromExternalAPIController> _logger;
+        public SuperheroFromExternalAPIController(ISuperheroExternalService superheroExternalService, ILogger<SuperheroFromExternalAPIController> logger)
+        {
+            _superheroExternalService = superheroExternalService;
+            _logger = logger;
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuperheroFromExternalAPI(int id)
         {
@@ -39,19 +46,18 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        [Authorize]
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavoriteSuperhero(int superheroId)
         {
+            
             var result = await _superheroExternalService.AddFavoriteSuperheroAsync(superheroId);
 
             if (!result.IsSuccess)
             {
-                return StatusCode(400, new { message = result.Message });
+                return BadRequest(new { message = result.Message });
             }
 
             return Ok(new { message = result.Message });
         }
-
     }
 }

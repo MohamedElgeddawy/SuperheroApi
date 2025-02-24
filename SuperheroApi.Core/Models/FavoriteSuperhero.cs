@@ -1,4 +1,5 @@
-﻿using SuperheroApi.Core.Models.Superhero;
+﻿using SuperheroApi.Core.Models;
+using SuperheroApi.Core.Models.Superhero;
 
 namespace SuperheroApi.Models
 {
@@ -8,6 +9,8 @@ namespace SuperheroApi.Models
         public int SuperheroId { get; set; }  
         public string SuperheroName { get; set; }  
         public Superhero Superhero { get; set; }
+
+       
     }
 
 }

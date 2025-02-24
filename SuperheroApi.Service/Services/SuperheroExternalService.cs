@@ -16,40 +16,40 @@ namespace SuperheroApi.Services.Services;
 
 public class SuperheroExternalService : ISuperheroExternalService
 {
-        private readonly HttpClient _httpClient;
-        private readonly IMemoryCache _cache;
-        private readonly ILogger<SuperheroExternalService> _logger;
-        private readonly IFavoriteSuperheroRepository _favoriteRepo;
-        private readonly ISuperheroRepository _superheroRepo;
-        private readonly ApiDbContext _dbContext;
-        private readonly IMapper _mapper;
+    private readonly HttpClient _httpClient;
+    private readonly IMemoryCache _cache;
+    private readonly ILogger<SuperheroExternalService> _logger;
+    private readonly IFavoriteSuperheroRepository _favoriteRepo;
+    private readonly ISuperheroRepository _superheroRepo;
+    private readonly ApiDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-        private const string BASE_URL = "https://superheroapi.com/api/1ad4ae5a4197e592e3f5ffd66f99e113/";
+    private const string BASE_URL = "https://superheroapi.com/api/1ad4ae5a4197e592e3f5ffd66f99e113/";
 
-        public SuperheroExternalService(
-            HttpClient httpClient,
-            IMemoryCache cache,
-            ILogger<SuperheroExternalService> logger,
-            IFavoriteSuperheroRepository favoriteRepo,
-            ISuperheroRepository superheroRepo,
-            ApiDbContext dbContext,
-            IMapper mapper)
-        {
-            _httpClient = httpClient;
-            _cache = cache;
-            _logger = logger;
-            _favoriteRepo = favoriteRepo;
-            _superheroRepo = superheroRepo;
-            _dbContext = dbContext;
-            _mapper = mapper;
-        }
+    public SuperheroExternalService(
+        HttpClient httpClient,
+        IMemoryCache cache,
+        ILogger<SuperheroExternalService> logger,
+        IFavoriteSuperheroRepository favoriteRepo,
+        ISuperheroRepository superheroRepo,
+        ApiDbContext dbContext,
+        IMapper mapper)
+    {
+        _httpClient = httpClient;
+        _cache = cache;
+        _logger = logger;
+        _favoriteRepo = favoriteRepo;
+        _superheroRepo = superheroRepo;
+        _dbContext = dbContext;
+        _mapper = mapper;
+    }
 
 
 
     /// <summary>
     /// Fetches superhero from external API and saves to database if not found.
     /// </summary>
-  
+
     public async Task<ServiceResponse<Superhero>> FetchSuperheroByIdAsync(int id)
     {
         try
@@ -176,7 +176,7 @@ public class SuperheroExternalService : ISuperheroExternalService
             {
                 // 🚀 Fetch from external API
                 var apiResponse = await FetchSuperheroByIdAsync(superheroId);
-                if (apiResponse.Data == null)  
+                if (apiResponse.Data == null)
                 {
                     return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} not found in external API.");
                 }
@@ -223,7 +223,7 @@ public class SuperheroExternalService : ISuperheroExternalService
                 var favoriteSuperhero = new FavoriteSuperhero
                 {
                     SuperheroId = superhero.Id,
-                    SuperheroName = superhero.Name 
+                    SuperheroName = superhero.Name
                 };
                 _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
                 await _dbContext.SaveChangesAsync();
