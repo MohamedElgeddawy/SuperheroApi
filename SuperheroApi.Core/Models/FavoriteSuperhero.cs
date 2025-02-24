@@ -10,11 +10,7 @@ namespace SuperheroApi.Models
         public string SuperheroName { get; set; }  
         public Superhero Superhero { get; set; }
 
-        // Add UserId to link with Users table
-        public string UserId { get; set; }
-
-        // Establish relationship with User
-        public AppUser User { get; set; }
+       
     }
 
 }

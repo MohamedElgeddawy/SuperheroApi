@@ -9,5 +9,5 @@ public interface ISuperheroExternalService
 {
     Task<ServiceResponse<Superhero>> FetchSuperheroByIdAsync(int id);
     Task<ServiceResponse<List<FavoriteSuperhero>>> GetFavoritesAsync();
-    Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId, string userId);
+    Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId);
 }

@@ -13,12 +13,12 @@ namespace SuperheroApi.Controllers
     public class SuperheroFromExternalAPIController : ControllerBase
     {
         private readonly ISuperheroExternalService _superheroExternalService;
-
-        public SuperheroFromExternalAPIController(ISuperheroExternalService superheroExternalService)
+        private readonly ILogger<SuperheroFromExternalAPIController> _logger;
+        public SuperheroFromExternalAPIController(ISuperheroExternalService superheroExternalService, ILogger<SuperheroFromExternalAPIController> logger)
         {
             _superheroExternalService = superheroExternalService;
+            _logger = logger;
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSuperheroFromExternalAPI(int id)
         {
@@ -32,6 +32,7 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
+        
         [HttpGet("favorites")]
         public async Task<IActionResult> GetFavorites()
         {
@@ -45,19 +46,11 @@ namespace SuperheroApi.Controllers
             return Ok(result.Data);
         }
 
-        [Authorize]
         [HttpPost("favorites")]
         public async Task<IActionResult> AddFavoriteSuperhero(int superheroId)
         {
-            // ✅ Retrieve the logged-in user ID
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized(new { message = "User must be logged in." });
-            }
-
-            // ✅ Pass userId when calling the service
-            var result = await _superheroExternalService.AddFavoriteSuperheroAsync(superheroId, userId);
+            
+            var result = await _superheroExternalService.AddFavoriteSuperheroAsync(superheroId);
 
             if (!result.IsSuccess)
             {

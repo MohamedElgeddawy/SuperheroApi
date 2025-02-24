@@ -16,40 +16,40 @@ namespace SuperheroApi.Services.Services;
 
 public class SuperheroExternalService : ISuperheroExternalService
 {
-        private readonly HttpClient _httpClient;
-        private readonly IMemoryCache _cache;
-        private readonly ILogger<SuperheroExternalService> _logger;
-        private readonly IFavoriteSuperheroRepository _favoriteRepo;
-        private readonly ISuperheroRepository _superheroRepo;
-        private readonly ApiDbContext _dbContext;
-        private readonly IMapper _mapper;
+    private readonly HttpClient _httpClient;
+    private readonly IMemoryCache _cache;
+    private readonly ILogger<SuperheroExternalService> _logger;
+    private readonly IFavoriteSuperheroRepository _favoriteRepo;
+    private readonly ISuperheroRepository _superheroRepo;
+    private readonly ApiDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-        private const string BASE_URL = "https://superheroapi.com/api/1ad4ae5a4197e592e3f5ffd66f99e113/";
+    private const string BASE_URL = "https://superheroapi.com/api/1ad4ae5a4197e592e3f5ffd66f99e113/";
 
-        public SuperheroExternalService(
-            HttpClient httpClient,
-            IMemoryCache cache,
-            ILogger<SuperheroExternalService> logger,
-            IFavoriteSuperheroRepository favoriteRepo,
-            ISuperheroRepository superheroRepo,
-            ApiDbContext dbContext,
-            IMapper mapper)
-        {
-            _httpClient = httpClient;
-            _cache = cache;
-            _logger = logger;
-            _favoriteRepo = favoriteRepo;
-            _superheroRepo = superheroRepo;
-            _dbContext = dbContext;
-            _mapper = mapper;
-        }
+    public SuperheroExternalService(
+        HttpClient httpClient,
+        IMemoryCache cache,
+        ILogger<SuperheroExternalService> logger,
+        IFavoriteSuperheroRepository favoriteRepo,
+        ISuperheroRepository superheroRepo,
+        ApiDbContext dbContext,
+        IMapper mapper)
+    {
+        _httpClient = httpClient;
+        _cache = cache;
+        _logger = logger;
+        _favoriteRepo = favoriteRepo;
+        _superheroRepo = superheroRepo;
+        _dbContext = dbContext;
+        _mapper = mapper;
+    }
 
 
 
     /// <summary>
     /// Fetches superhero from external API and saves to database if not found.
     /// </summary>
-  
+
     public async Task<ServiceResponse<Superhero>> FetchSuperheroByIdAsync(int id)
     {
         try
@@ -165,87 +165,16 @@ public class SuperheroExternalService : ISuperheroExternalService
     /// <summary>
     /// Add favorite superheroe To database.
     /// </summary>
-    //public async Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId)
-    //{
-    //    try
-    //    {
-    //        // ✅ Check if superhero exists in database
-    //        var superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
-
-    //        if (superhero == null)
-    //        {
-    //            // 🚀 Fetch from external API
-    //            var apiResponse = await FetchSuperheroByIdAsync(superheroId);
-    //            if (apiResponse.Data == null)  
-    //            {
-    //                return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} not found in external API.");
-    //            }
-
-    //            superhero = apiResponse.Data;
-
-    //            // ✅ Explicitly start a transaction
-    //            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
-    //            {
-    //                try
-    //                {
-    //                    // 💾 Save superhero to database first
-    //                    _dbContext.Superheroes.Add(superhero);
-    //                    await _dbContext.SaveChangesAsync();
-
-    //                    // 🔥 Ensure it's properly tracked
-    //                    superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
-
-    //                    // ✅ Add to favorites in the same transaction
-    //                    var favoriteSuperhero = new FavoriteSuperhero { SuperheroId = superhero.Id };
-    //                    _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
-    //                    await _dbContext.SaveChangesAsync();
-
-    //                    // ✅ Commit transaction
-    //                    await transaction.CommitAsync();
-    //                }
-    //                catch (Exception)
-    //                {
-    //                    await transaction.RollbackAsync();
-    //                    throw;
-    //                }
-    //            }
-    //        }
-    //        else
-    //        {
-    //            // ✅ If superhero exists, just add to favorites
-    //            bool alreadyFavorited = await _dbContext.FavoriteSuperheroes.AnyAsync(fav => fav.SuperheroId == superheroId);
-    //            if (alreadyFavorited)
-    //            {
-    //                return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} is already in favorites.");
-    //            }
-
-    //            // 💾 Add to favorites
-    //            var favoriteSuperhero = new FavoriteSuperhero
-    //            {
-    //                SuperheroId = superhero.Id,
-    //                SuperheroName = superhero.Name 
-    //            };
-    //            _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
-    //            await _dbContext.SaveChangesAsync();
-    //        }
-
-    //        return new ServiceResponse<string>(null, true, $"Superhero ID {superheroId} added to favorites.");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        _logger.LogError($"Error adding superhero {superheroId} to favorites: {ex.Message}");
-    //        return new ServiceResponse<string>(null, false, "An error occurred while adding superhero to favorites.");
-    //    }
-    //}
-    public async Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId, string userId)
+    public async Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId)
     {
         try
         {
-            // ✅ Check if the superhero exists in the database
+            // ✅ Check if superhero exists in database
             var superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
 
             if (superhero == null)
             {
+                // 🚀 Fetch from external API
                 var apiResponse = await FetchSuperheroByIdAsync(superheroId);
                 if (apiResponse.Data == null)
                 {
@@ -254,32 +183,51 @@ public class SuperheroExternalService : ISuperheroExternalService
 
                 superhero = apiResponse.Data;
 
+                // ✅ Explicitly start a transaction
                 using (var transaction = await _dbContext.Database.BeginTransactionAsync())
                 {
                     try
                     {
+                        // 💾 Save superhero to database first
                         _dbContext.Superheroes.Add(superhero);
                         await _dbContext.SaveChangesAsync();
+
+                        // 🔥 Ensure it's properly tracked
+                        superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
+
+                        // ✅ Add to favorites in the same transaction
+                        var favoriteSuperhero = new FavoriteSuperhero { SuperheroId = superhero.Id };
+                        _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
+                        await _dbContext.SaveChangesAsync();
+
+                        // ✅ Commit transaction
                         await transaction.CommitAsync();
                     }
-                    catch
+                    catch (Exception)
                     {
                         await transaction.RollbackAsync();
                         throw;
                     }
                 }
             }
-
-            // ✅ Ensure `UserId` is included when adding to favorites
-            var favoriteSuperhero = new FavoriteSuperhero
+            else
             {
-                SuperheroId = superhero.Id,
-                SuperheroName = superhero.Name,
-                UserId = userId
-            };
+                // ✅ If superhero exists, just add to favorites
+                bool alreadyFavorited = await _dbContext.FavoriteSuperheroes.AnyAsync(fav => fav.SuperheroId == superheroId);
+                if (alreadyFavorited)
+                {
+                    return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} is already in favorites.");
+                }
 
-            _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
-            await _dbContext.SaveChangesAsync();
+                // 💾 Add to favorites
+                var favoriteSuperhero = new FavoriteSuperhero
+                {
+                    SuperheroId = superhero.Id,
+                    SuperheroName = superhero.Name
+                };
+                _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
+                await _dbContext.SaveChangesAsync();
+            }
 
             return new ServiceResponse<string>(null, true, $"Superhero ID {superheroId} added to favorites.");
         }
@@ -289,8 +237,6 @@ public class SuperheroExternalService : ISuperheroExternalService
             return new ServiceResponse<string>(null, false, "An error occurred while adding superhero to favorites.");
         }
     }
-
-
 
     /// <summary>
     /// Fetches favorite superheroes from the database.
