@@ -11,6 +11,7 @@ using SuperheroApi.Models;
 using SuperheroApi.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using SuperheroApi.Core.Models.Superhero;
+using SuperheroApi.Core.DTOs;
 
 namespace SuperheroApi.Services.Services
 {
@@ -48,26 +49,224 @@ namespace SuperheroApi.Services.Services
         /// Fetches superhero from external API and saves to database if not found.
         /// Now uses caching with a 60-minute expiration time.
         /// </summary>
-        public async Task<ServiceResponse<Superhero>> FetchSuperheroByIdAsync(int id)
+        //public async Task<ServiceResponse<Superhero>> FetchSuperheroByIdAsync(int id)
+        //{
+        //    try
+        //    {
+        //        if (id <= 0)
+        //        {
+        //            _logger.LogWarning("Invalid superhero ID: {Id}", id);
+        //            return new ServiceResponse<Superhero>(null, false, "Invalid ID.");
+        //        }
+
+        //        string cacheKey = $"Superhero_{id}";
+
+        //        // ✅ Step 1: Check Cache First (Expiration: 60 minutes)
+        //        if (_cache.TryGetValue(cacheKey, out Superhero cachedSuperhero))
+        //        {
+        //            _logger.LogInformation("Returning cached superhero for ID {Id}", id);
+        //            return new ServiceResponse<Superhero>(cachedSuperhero, true, "Superhero retrieved from cache.");
+        //        }
+
+        //        // ✅ Step 2: Check Database
+        //        var existingSuperhero = await _dbContext.Superheroes
+        //            .AsNoTracking()
+        //            .FirstOrDefaultAsync(s => s.Id == id);
+
+        //        if (existingSuperhero != null)
+        //        {
+        //            _logger.LogInformation("Superhero ID {Id} found in database.", id);
+
+        //            // ✅ Store in cache for 60 minutes
+        //            _cache.Set(cacheKey, existingSuperhero, new MemoryCacheEntryOptions
+        //            {
+        //                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+        //            });
+
+        //            return new ServiceResponse<Superhero>(existingSuperhero, true, "Superhero retrieved from database.");
+        //        }
+
+        //        // ✅ Step 3: Fetch from External API
+        //        _logger.LogInformation("Fetching superhero ID {Id} from external API", id);
+        //        HttpResponseMessage response = await _httpClient.GetAsync($"{BASE_URL}{id}");
+
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            _logger.LogError("External API request failed with status {StatusCode} for ID {Id}", response.StatusCode, id);
+        //            return new ServiceResponse<Superhero>(null, false, "Superhero not found in external API.");
+        //        }
+
+        //        string rawResponse = await response.Content.ReadAsStringAsync();
+        //        _logger.LogInformation("Raw API Response for Superhero ID {Id}: {Response}", id, rawResponse);
+
+        //        var apiResponse = JsonSerializer.Deserialize<SuperheroApiResponse>(rawResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        //        if (apiResponse == null || apiResponse.Response == "error")
+        //        {
+        //            _logger.LogError("Superhero API returned an error message for ID {Id}", id);
+        //            return new ServiceResponse<Superhero>(null, false, "Superhero not found.");
+        //        }
+
+        //        // ✅ Step 4: Ensure Mapped Data is Valid
+        //        var superhero = _mapper.Map<Superhero>(apiResponse);
+
+        //        if (string.IsNullOrEmpty(superhero.Name))
+        //        {
+        //            _logger.LogError("Mapped superhero object is invalid for ID {Id}", id);
+        //            return new ServiceResponse<Superhero>(null, false, "Invalid data from external API.");
+        //        }
+
+        //        // ✅ Step 5: Save Superhero to Database and Re-Fetch
+        //        using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+        //        {
+        //            try
+        //            {
+        //                superhero.Id = 0;
+        //                _dbContext.Superheroes.Add(superhero);
+        //                await _dbContext.SaveChangesAsync();
+
+        //                superhero = await _dbContext.Superheroes
+        //                    .AsNoTracking()
+        //                    .FirstOrDefaultAsync(s => s.Id == superhero.Id);
+
+        //                if (superhero == null)
+        //                {
+        //                    throw new Exception($"Superhero ID {id} failed to save.");
+        //                }
+
+        //                await transaction.CommitAsync();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                await transaction.RollbackAsync();
+        //                _logger.LogError(ex, "Error while saving superhero ID {Id}", id);
+        //                return new ServiceResponse<Superhero>(null, false, "Database error while saving superhero.");
+        //            }
+        //        }
+
+        //        // ✅ Step 6: Update Cache (Expiration: 60 minutes)
+        //        _cache.Set(cacheKey, superhero, new MemoryCacheEntryOptions
+        //        {
+        //            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+        //        });
+
+        //        return new ServiceResponse<Superhero>(superhero, true, "Superhero successfully fetched and saved.");
+        //    }
+        //    catch (JsonException ex)
+        //    {
+        //        _logger.LogError(ex, "JSON deserialization failed for superhero ID {Id}", id);
+        //        return new ServiceResponse<Superhero>(null, false, "Invalid data from external API.");
+        //    }
+        //    catch (HttpRequestException ex)
+        //    {
+        //        _logger.LogError(ex, "Network error while calling external API for superhero ID {Id}", id);
+        //        return new ServiceResponse<Superhero>(null, false, "External API unavailable.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Unexpected error while fetching superhero ID {Id}", id);
+        //        return new ServiceResponse<Superhero>(null, false, "An unexpected error occurred.");
+        //    }
+        //}
+
+
+        ///// <summary>
+        ///// Add favorite superheroe To database.
+        ///// </summary>
+        //public async Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId)
+        //{
+        //    try
+        //    {
+        //        // ✅ Check if superhero exists in database
+        //        var superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
+
+        //        if (superhero == null)
+        //        {
+        //            // 🚀 Fetch from external API
+        //            var apiResponse = await FetchSuperheroByIdAsync(superheroId);
+        //            if (apiResponse.Data == null)
+        //            {
+        //                return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} not found in external API.");
+        //            }
+
+        //            superhero = apiResponse.Data;
+
+        //            // ✅ Explicitly start a transaction
+        //            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+        //            {
+        //                try
+        //                {
+        //                    // 💾 Save superhero to database first
+        //                    _dbContext.Superheroes.Add(superhero);
+        //                    await _dbContext.SaveChangesAsync();
+
+        //                    // 🔥 Ensure it's properly tracked
+        //                    superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
+
+        //                    // ✅ Add to favorites in the same transaction
+        //                    var favoriteSuperhero = new FavoriteSuperhero { SuperheroId = superhero.Id };
+        //                    _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
+        //                    await _dbContext.SaveChangesAsync();
+
+        //                    // ✅ Commit transaction
+        //                    await transaction.CommitAsync();
+        //                }
+        //                catch (Exception)
+        //                {
+        //                    await transaction.RollbackAsync();
+        //                    throw;
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // ✅ If superhero exists, just add to favorites
+        //            bool alreadyFavorited = await _dbContext.FavoriteSuperheroes.AnyAsync(fav => fav.SuperheroId == superheroId);
+        //            if (alreadyFavorited)
+        //            {
+        //                return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} is already in favorites.");
+        //            }
+
+        //            // 💾 Add to favorites
+        //            var favoriteSuperhero = new FavoriteSuperhero
+        //            {
+        //                SuperheroId = superhero.Id,
+        //                SuperheroName = superhero.Name
+        //            };
+        //            _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
+        //            await _dbContext.SaveChangesAsync();
+        //        }
+
+        //        return new ServiceResponse<string>(null, true, $"Superhero ID {superheroId} added to favorites.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Error adding superhero {superheroId} to favorites: {ex.Message}");
+        //        return new ServiceResponse<string>(null, false, "An error occurred while adding superhero to favorites.");
+        //    }
+        //}
+
+        public async Task<ServiceResponse<SuperheroDto>> FetchSuperheroByIdAsync(int id)
         {
             try
             {
                 if (id <= 0)
                 {
                     _logger.LogWarning("Invalid superhero ID: {Id}", id);
-                    return new ServiceResponse<Superhero>(null, false, "Invalid ID.");
+                    return new ServiceResponse<SuperheroDto>(null, false, "Invalid ID.");
                 }
 
                 string cacheKey = $"Superhero_{id}";
 
-                // ✅ Step 1: Check Cache First (Expiration: 60 minutes)
+                // ✅ Check Cache First
                 if (_cache.TryGetValue(cacheKey, out Superhero cachedSuperhero))
                 {
                     _logger.LogInformation("Returning cached superhero for ID {Id}", id);
-                    return new ServiceResponse<Superhero>(cachedSuperhero, true, "Superhero retrieved from cache.");
+                    var cachedSuperheroDto = _mapper.Map<SuperheroDto>(cachedSuperhero);
+                    return new ServiceResponse<SuperheroDto>(cachedSuperheroDto, true, "Superhero retrieved from cache.");
                 }
 
-                // ✅ Step 2: Check Database
+                // ✅ Check Database
                 var existingSuperhero = await _dbContext.Superheroes
                     .AsNoTracking()
                     .FirstOrDefaultAsync(s => s.Id == id);
@@ -75,47 +274,46 @@ namespace SuperheroApi.Services.Services
                 if (existingSuperhero != null)
                 {
                     _logger.LogInformation("Superhero ID {Id} found in database.", id);
+                    var existingSuperheroDto = _mapper.Map<SuperheroDto>(existingSuperhero);
 
-                    // ✅ Store in cache for 60 minutes
+                    // ✅ Store in cache
                     _cache.Set(cacheKey, existingSuperhero, new MemoryCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
                     });
 
-                    return new ServiceResponse<Superhero>(existingSuperhero, true, "Superhero retrieved from database.");
+                    return new ServiceResponse<SuperheroDto>(existingSuperheroDto, true, "Superhero retrieved from database.");
                 }
 
-                // ✅ Step 3: Fetch from External API
+                // ✅ Fetch from External API
                 _logger.LogInformation("Fetching superhero ID {Id} from external API", id);
                 HttpResponseMessage response = await _httpClient.GetAsync($"{BASE_URL}{id}");
 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("External API request failed with status {StatusCode} for ID {Id}", response.StatusCode, id);
-                    return new ServiceResponse<Superhero>(null, false, "Superhero not found in external API.");
+                    return new ServiceResponse<SuperheroDto>(null, false, "Superhero not found in external API.");
                 }
 
                 string rawResponse = await response.Content.ReadAsStringAsync();
-                _logger.LogInformation("Raw API Response for Superhero ID {Id}: {Response}", id, rawResponse);
-
                 var apiResponse = JsonSerializer.Deserialize<SuperheroApiResponse>(rawResponse, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 if (apiResponse == null || apiResponse.Response == "error")
                 {
                     _logger.LogError("Superhero API returned an error message for ID {Id}", id);
-                    return new ServiceResponse<Superhero>(null, false, "Superhero not found.");
+                    return new ServiceResponse<SuperheroDto>(null, false, "Superhero not found.");
                 }
 
-                // ✅ Step 4: Ensure Mapped Data is Valid
+                // ✅ Map the API response to `Superhero` entity
                 var superhero = _mapper.Map<Superhero>(apiResponse);
 
                 if (string.IsNullOrEmpty(superhero.Name))
                 {
                     _logger.LogError("Mapped superhero object is invalid for ID {Id}", id);
-                    return new ServiceResponse<Superhero>(null, false, "Invalid data from external API.");
+                    return new ServiceResponse<SuperheroDto>(null, false, "Invalid data from external API.");
                 }
 
-                // ✅ Step 5: Save Superhero to Database and Re-Fetch
+                // ✅ Save to database
                 using (var transaction = await _dbContext.Database.BeginTransactionAsync())
                 {
                     try
@@ -139,102 +337,54 @@ namespace SuperheroApi.Services.Services
                     {
                         await transaction.RollbackAsync();
                         _logger.LogError(ex, "Error while saving superhero ID {Id}", id);
-                        return new ServiceResponse<Superhero>(null, false, "Database error while saving superhero.");
+                        return new ServiceResponse<SuperheroDto>(null, false, "Database error while saving superhero.");
                     }
                 }
 
-                // ✅ Step 6: Update Cache (Expiration: 60 minutes)
+                // ✅ Convert to DTO
+                var superheroDto = _mapper.Map<SuperheroDto>(superhero);
+
+                // ✅ Update Cache
                 _cache.Set(cacheKey, superhero, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
                 });
 
-                return new ServiceResponse<Superhero>(superhero, true, "Superhero successfully fetched and saved.");
-            }
-            catch (JsonException ex)
-            {
-                _logger.LogError(ex, "JSON deserialization failed for superhero ID {Id}", id);
-                return new ServiceResponse<Superhero>(null, false, "Invalid data from external API.");
-            }
-            catch (HttpRequestException ex)
-            {
-                _logger.LogError(ex, "Network error while calling external API for superhero ID {Id}", id);
-                return new ServiceResponse<Superhero>(null, false, "External API unavailable.");
+                return new ServiceResponse<SuperheroDto>(superheroDto, true, "Superhero successfully fetched and saved.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error while fetching superhero ID {Id}", id);
-                return new ServiceResponse<Superhero>(null, false, "An unexpected error occurred.");
+                return new ServiceResponse<SuperheroDto>(null, false, "An unexpected error occurred.");
             }
         }
 
-
-        /// <summary>
-        /// Add favorite superheroe To database.
-        /// </summary>
         public async Task<ServiceResponse<string>> AddFavoriteSuperheroAsync(int superheroId)
         {
             try
             {
-                // ✅ Check if superhero exists in database
-                var superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
-
-                if (superhero == null)
+                var superheroResponse = await FetchSuperheroByIdAsync(superheroId);
+                if (!superheroResponse.IsSuccess || superheroResponse.Data == null)
                 {
-                    // 🚀 Fetch from external API
-                    var apiResponse = await FetchSuperheroByIdAsync(superheroId);
-                    if (apiResponse.Data == null)
-                    {
-                        return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} not found in external API.");
-                    }
-
-                    superhero = apiResponse.Data;
-
-                    // ✅ Explicitly start a transaction
-                    using (var transaction = await _dbContext.Database.BeginTransactionAsync())
-                    {
-                        try
-                        {
-                            // 💾 Save superhero to database first
-                            _dbContext.Superheroes.Add(superhero);
-                            await _dbContext.SaveChangesAsync();
-
-                            // 🔥 Ensure it's properly tracked
-                            superhero = await _dbContext.Superheroes.FirstOrDefaultAsync(s => s.Id == superheroId);
-
-                            // ✅ Add to favorites in the same transaction
-                            var favoriteSuperhero = new FavoriteSuperhero { SuperheroId = superhero.Id };
-                            _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
-                            await _dbContext.SaveChangesAsync();
-
-                            // ✅ Commit transaction
-                            await transaction.CommitAsync();
-                        }
-                        catch (Exception)
-                        {
-                            await transaction.RollbackAsync();
-                            throw;
-                        }
-                    }
+                    return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} not found.");
                 }
-                else
+
+                var superheroDto = superheroResponse.Data;
+
+                bool alreadyFavorited = await _dbContext.FavoriteSuperheroes.AnyAsync(fav => fav.SuperheroId == superheroId);
+                if (alreadyFavorited)
                 {
-                    // ✅ If superhero exists, just add to favorites
-                    bool alreadyFavorited = await _dbContext.FavoriteSuperheroes.AnyAsync(fav => fav.SuperheroId == superheroId);
-                    if (alreadyFavorited)
-                    {
-                        return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} is already in favorites.");
-                    }
-
-                    // 💾 Add to favorites
-                    var favoriteSuperhero = new FavoriteSuperhero
-                    {
-                        SuperheroId = superhero.Id,
-                        SuperheroName = superhero.Name
-                    };
-                    _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
-                    await _dbContext.SaveChangesAsync();
+                    return new ServiceResponse<string>(null, false, $"Superhero ID {superheroId} is already in favorites.");
                 }
+
+                var favoriteSuperhero = new FavoriteSuperhero
+                {
+                    SuperheroId = superheroId,
+                    SuperheroName = superheroDto.Name
+                };
+
+                _dbContext.FavoriteSuperheroes.Add(favoriteSuperhero);
+                await _dbContext.SaveChangesAsync();
 
                 return new ServiceResponse<string>(null, true, $"Superhero ID {superheroId} added to favorites.");
             }

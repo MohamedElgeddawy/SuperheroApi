@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SuperheroApi.Core;
+using SuperheroApi.Core.DTOs;
 using SuperheroApi.Core.Models;
 using SuperheroApi.Core.Models.Superhero;
 using SuperheroApi.Service.IServices;
@@ -21,17 +22,17 @@ namespace SuperheroApi.Services.Service
             _logger = logger;
         }
 
-        public async Task<ServiceResponse<Superhero>> GetSuperheroByIdAsync(int id)
+        public async Task<ServiceResponse<SuperheroDto>> GetSuperheroByIdAsync(int id)
         {
             try
             {
                 if (id <= 0)
                 {
-                    return new ServiceResponse<Superhero>(null, false, "Invalid ID. ID must be greater than zero.");
+                    return new ServiceResponse<SuperheroDto>(null, false, "Invalid ID. ID must be greater than zero.");
                 }
 
                 string cacheKey = $"Superhero_Id_{id}";
-                var cachedSuperhero = _cacheService.Get<ServiceResponse<Superhero>>(cacheKey);
+                var cachedSuperhero = _cacheService.Get<ServiceResponse<SuperheroDto>>(cacheKey);
                 if (cachedSuperhero != null)
                 {
                     _logger.LogInformation("Cache hit for superhero ID {Id}.", id);
@@ -39,14 +40,15 @@ namespace SuperheroApi.Services.Service
                 }
 
                 var superhero = await _repository.GetByIdAsync(id);
-
                 if (superhero == null)
                 {
                     _logger.LogWarning("Superhero with ID {Id} not found.", id);
-                    return new ServiceResponse<Superhero>(null, false, $"Superhero with ID {id} not found.");
+                    return new ServiceResponse<SuperheroDto>(null, false, $"Superhero with ID {id} not found.");
                 }
 
-                var response = new ServiceResponse<Superhero>(superhero, true, "Superhero retrieved successfully.");
+                var superheroDto = new SuperheroDto { Id = superhero.Id, Name = superhero.Name, Alias = superhero.Biography.FullName, Powers = superhero.Powerstats.Power };
+
+                var response = new ServiceResponse<SuperheroDto>(superheroDto, true, "Superhero retrieved successfully.");
                 _cacheService.Set(cacheKey, response, TimeSpan.FromMinutes(60));
 
                 return response;
@@ -54,10 +56,9 @@ namespace SuperheroApi.Services.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving superhero with ID {Id}", id);
-                return new ServiceResponse<Superhero>(null, false, "An unexpected error occurred.");
+                return new ServiceResponse<SuperheroDto>(default, false, "An unexpected error occurred.");
             }
         }
-
         public async Task<ServiceResponse<Superhero>> GetSuperheroByNameAsync(string name)
         {
             try
@@ -91,7 +92,7 @@ namespace SuperheroApi.Services.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving superhero with name {Name}", name);
-                return new ServiceResponse<Superhero>(null, false, "An unexpected error occurred.");
+                return new ServiceResponse<Superhero>(default, false, "An unexpected error occurred.");
             }
         }
     }

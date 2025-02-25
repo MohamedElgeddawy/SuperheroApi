@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using SuperheroApi.Core.Models.Superhero;
 
 
 
@@ -30,14 +31,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // ? Add services to the container (only one `AddControllers()`)
-builder.Services.AddControllers(options =>
-{
-    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-})
-.AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-});
+//builder.Services.AddControllers(options =>
+//{
+//    options.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<SuperheroValidator>());
+//    builder.Services.AddControllers()
+//        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<SuperheroValidator>())
+//        .AddJsonOptions(options =>
+//        {
+//            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+//        });
+//});
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<SuperheroValidator>());
+
 
 // Learn more about configuring Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -136,6 +142,7 @@ builder.Services.AddScoped<ISuperheroExternalService, SuperheroExternalService>(
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ICacheService, MemoryCacheService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 

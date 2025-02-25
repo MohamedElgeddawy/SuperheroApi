@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SuperheroApi.Core.DTOs;
 using SuperheroApi.Core.Models.Superhero;
 
 namespace SuperheroApi.Core.Models
@@ -7,6 +8,9 @@ namespace SuperheroApi.Core.Models
     {
         public MappingProfile()
         {
+            CreateMap<Superhero.Superhero, SuperheroDto>(); 
+            CreateMap<SuperheroDto, Superhero.Superhero>();
+
             CreateMap<SuperheroApiResponse, Superhero.Superhero>()
                 .ForMember(dest => dest.Appearance, opt => opt.MapFrom(src => src.Appearance ?? new AppearanceApiResponse()))
                 .ForMember(dest => dest.Biography, opt => opt.MapFrom(src => src.Biography ?? new BiographyApiResponse()))
