@@ -1,11 +1,13 @@
 # Superhero API
 
+
 ## Table of Contents
 1. [Introduction](#introduction)
    - [Overview](#overview)
    - [Project Overview](#project-overview)
 2. [Architecture](#architecture)
    - [Components](#components)
+   - [Caching Strategy](#caching-strategy)
 3. [Database](#database)
    - [Schema](#schema)
    - [Data Models](#data-models)
@@ -41,6 +43,20 @@ The project follows a clean architecture pattern, ensuring modularity, scalabili
 The system follows the **Repository Pattern** for managing data access and separation of concerns.
 
 ![Repository Pattern](./README/RepositoryPattern.png)
+
+### Caching Strategy
+To improve performance and reduce database load, we have implemented a **cache-first strategy**.
+
+#### **How It Works:**
+1. When a request is made, the system first **checks the cache**.
+2. If data is **available and valid**, it is returned from the cache.
+3. If data is **expired** or **not found**, the system retrieves it from the database.
+4. Once retrieved, data is **stored in the cache** for future requests.
+
+#### **Flowchart**
+The following diagram illustrates the caching process:
+
+![Cache Flow](./README/cache-flow.png)
 
 ---
 
