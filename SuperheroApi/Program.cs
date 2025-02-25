@@ -134,6 +134,8 @@ builder.Services.AddScoped<ISuperheroExternalService, SuperheroExternalService>(
 
 // ? Register Caching
 builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<ICacheService, MemoryCacheService>();
 
 var app = builder.Build();
 
