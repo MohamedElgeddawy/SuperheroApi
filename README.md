@@ -18,6 +18,7 @@
    - [Super Hero Details](#super-hero-details)
    - [Favorite List Details](#favorite-list-details)
    - [Response Messages](#response-messages)
+   - [Usage Examples](#usage-examples)
 5. [Integration Services](#integration-services)
    - [External Services](#external-services)
 6. [Setup and Configuration](#setup-and-configuration)
@@ -104,6 +105,99 @@ All API responses follow a consistent format:
   "message": "Data retrieved successfully",
   "data": { }
 }
+```
+
+## Usage Examples
+
+### **Register a New User**
+
+**Request:**
+
+```http
+POST /api/Account/register
+Content-Type: application/json
+```
+
+**Body:**
+
+```json
+{
+  "username": "john_doe",
+  "email": "johndoe@example.com",
+  "password": "SecurePass123!"
+}
+```
+
+**Response (Success 200 OK):**
+
+```json
+{
+  "message": "User registered successfully",
+  "userId": "12345"
+}
+```
+
+**Response (Failure 400 Bad Request):**
+
+```json
+{
+  "error": "Email is already in use"
+}
+```
+
+### **Get Superhero by ID**
+
+**Request:**
+
+```http
+GET /api/Superhero/1
+```
+
+**Response (Success 200 OK):**
+
+```json
+{
+  "id": 1,
+  "name": "Spider-Man",
+  "powerstats": {
+    "intelligence": 90,
+    "strength": 55
+  },
+  "biography": {
+    "fullName": "Peter Parker"
+  }
+}
+```
+
+### **Add a Superhero to Favorites**
+
+**Request:**
+
+```http
+POST /api/Favorites/add
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+**Body:**
+
+```json
+{
+  "userId": "12345",
+  "superheroId": 1
+}
+```
+
+**Response (Success 201 Created):**
+
+```json
+{
+  "message": "Superhero added to favorites successfully"
+}
+```
+
+
+
 ```
 
 ---
