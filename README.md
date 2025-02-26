@@ -56,7 +56,7 @@ To improve performance and reduce database load, we have implemented a **cache-f
 #### **Flowchart**
 The following diagram illustrates the caching process:
 
-![Cache Flow](./README/cache-flow.png)
+![Cache Flow](./README/cache-flow.PNG)
 
 ---
 
