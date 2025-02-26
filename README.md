@@ -14,6 +14,7 @@
 4. [API Guide](#api-guide)
    - [Request Flow](#request-flow)
    - [API Overview](#api-overview)
+   - - [Flowchart](#flowchart)
    - [Auth Details](#auth-details)
    - [Super Hero Details](#super-hero-details)
    - [Favorite List Details](#favorite-list-details)
@@ -82,7 +83,37 @@ The API follows a structured flow from **request to response** with authenticati
 
 ### API Overview
 Here is a list of the available API endpoints:
+### Flowchart
 
+This flowchart illustrates the API request flow, including authentication, database checks, and external API interactions.
+
+```mermaid
+flowchart TD;
+    A[Start: User Sends Request] -->|Check Authentication| B{Authenticated?};
+    B -- Yes --> C[Identify Request Type];
+    B -- No --> Z[Return Authentication Error];
+    
+    C -->|Fetch Superhero| D{Exists in Database?};
+    D -- Yes --> E[Return Superhero Data];
+    D -- No --> F[Fetch from External API];
+    F --> G[Save to Database];
+    G --> E;
+    
+    C -->|Add to Favorites| H{Exists in Favorites?};
+    H -- Yes --> I[Return Already Favorited Message];
+    H -- No --> J[Save to Favorites];
+    J --> K[Return Success Message];
+    
+    C -->|Remove from Favorites| L{Exists in Favorites?};
+    L -- Yes --> M[Remove from Favorites];
+    L -- No --> N[Return Not Found Message];
+    M --> K;
+    
+    E --> X[Return Success Response];
+    K --> X;
+    N --> X;
+    X --> Y[End];
+```
 ![API Endpoints](./README/swagger.PNG)
 
 ### Auth Details
