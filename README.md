@@ -13,8 +13,8 @@
    - [Data Models](#data-models)
 4. [API Guide](#api-guide)
    - [Request Flow](#request-flow)
+   - [Flowchart](#flowchart)
    - [API Overview](#api-overview)
-   - - [Flowchart](#flowchart)
    - [Auth Details](#auth-details)
    - [Super Hero Details](#super-hero-details)
    - [Favorite List Details](#favorite-list-details)
@@ -81,8 +81,7 @@ The database structure follows a relational model with user authentication, supe
 ### Request Flow
 The API follows a structured flow from **request to response** with authentication and validation layers.
 
-### API Overview
-Here is a list of the available API endpoints:
+
 ### Flowchart
 
 This flowchart illustrates the API request flow, including authentication, database checks, and external API interactions.
@@ -114,6 +113,9 @@ flowchart TD;
     N --> X;
     X --> Y[End];
 ```
+
+### API Overview
+Here is a list of the available API endpoints:
 ![API Endpoints](./README/swagger.PNG)
 
 ### Auth Details
